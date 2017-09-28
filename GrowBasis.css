@@ -3,6 +3,7 @@ body {
 }
 
 .growContainer {
+  box-sizing: border-box;
   width: 1024px;
   height: 768px;
   position: absolute;
