@@ -1,0 +1,1703 @@
+body {
+	background-color: DDDDDD;
+}
+
+.growContainer {
+  box-sizing: border-box;
+  width: 1024px;
+  height: 768px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  border: 1px solid black;
+}
+
+/* TIME FUNCTIONS */
+.dayCounter {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	border: 4px double darkgrey;
+	text-align: center;
+	background-color: grey;
+	color: white;
+	position: absolute;
+	top: 725px;
+	left: 980px;
+}
+
+/* Quest Beginner Canvas */
+
+#questBeginnerCanvas {
+  display: none;
+  z-index: 10;
+}
+
+.oneTimeActionContainer {
+  width: 0;
+  height: 768px;
+  background-color: white;
+  position: absolute;
+  box-sizing: border-box;
+  border: 4px double gray;
+  top: 0;
+  left: 0;
+  transition: all 800ms;
+  opacity: 0;
+  z-index: 0;
+  padding-left: 80px;
+  padding-right: 80px;
+  background-image: url("http://res.cloudinary.com/gionisos/image/upload/v1496078051/questBackground_rw98vi.png");
+  background-size: 100% 100%;
+}
+
+.oneTimeActionContainerClose {
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+  position: relative;
+  left: 627px;
+  top: 17px;
+}
+
+.oneTimeActionAccept {
+  width: 160px;
+  height: 30px;
+  background-color: green;
+  border-radius: 10px;
+  line-height: 30px;
+  text-align: center;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.townContainer {
+	z-index: 11;
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+	width: 400px;
+	height: 600px;
+	background-color: white;
+	border: 4px double darkgrey;
+	opacity: 0.9;
+	
+}
+
+.townTitle {
+	display: inline-block;
+	width: 100%;
+	height: 40px;
+	border-bottom: 1px solid grey;
+	background-color: darkgrey;
+	text-align: center;
+	line-height: 40px;
+	font-size: 23px;
+	color: white; 
+}
+
+.townHabit, .townOneTimeTask {
+	display: inline-block;
+	width: 350px;
+	height: 70px;
+	padding: 7px;
+	border: 1px solid black;
+	margin-left: 25px;
+	margin-top: 10px;
+	box-sizing: border-box;
+	line-height: 50px;
+	text-align: center;
+	font-size: 20px;
+	transition: all 800ms;
+	cursor: pointer;
+	overflow: hidden;
+}
+
+
+
+.townList {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.townTaskNumber {
+	position: relative;
+	float: right; 
+	top: -80px;
+	left: 30px;
+	font-size: 13px;
+	border: 1px solid black;
+	width: 45px;
+	height: 45px;
+	line-height: 40px;
+	border-radius: 50%;
+	
+	
+}
+
+.townTaskNumber > span {
+  position: relative;
+  top: 12px;
+  left: -8px;
+}
+
+.townHabit:hover .townTaskNumber, .townOneTimeTask:hover .townTaskNumber {
+	background-color: yellow;
+}
+
+.townHabitText {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	display: none;
+	width: 300px;
+	height: 100px; 
+}
+
+
+.townHabitAccept, .townTaskAccept {
+	display: inline-block;
+	width: 140px;
+	height: 60px;
+	background-color: yellow;
+	border-radius: 20px;
+	position: absolute;
+	top: 450px;
+	left: 100px;
+	text-align: center;
+	line-height: 60px;
+	cursor: pointer;
+}
+
+.townQuestClicked {
+   height : 537px;
+   position: absolute;
+   top: 41px;
+}
+
+.townTaskText {
+   margin-left: -20px;
+   list-style-type: none; 
+	
+}
+
+.townTaskVideo {
+	width: 300px;
+	height: 200px;
+	float: left;
+	margin-top: 20px;
+	
+}
+
+
+
+
+
+
+
+.sideBar {
+  width: 256px;
+  height: 766px;
+  float: left;
+  background-color: white;
+}
+
+.avatarContainerPosition {
+  height: 192px;
+  width: 255px;
+}
+
+.avatarContainer {
+  height: 192px;
+  width: 255px;
+  background-color: #A3320B;
+  -webkit-transition: background-image 0.5s;
+  -moz-transition: background-image 0.5s;
+  -ms-transition: background-image 0.5s;
+  -o-transition: background-image 0.5s;
+  transition: background-image 0.5s;
+  position: absolute;
+  border-bottom: 1px solid gray;
+  /* Keeps Avatar Image in the foreground */
+  z-index: 9;
+  
+}
+
+.avatarContainerBackgroundDiv {
+	position: absolute; 
+	top: 0px;
+	left: 0px;
+	
+}
+
+.avatarContainerBackground {
+  margin-left: 84px;
+  margin-top: 96px;
+  z-index: 10;
+}
+
+.avatarImage {
+  width: 48px; /*width changed from 36 to 48! */
+  transform: translate(100%, 60%);
+  border-radius: 25%;
+  position: relative;
+  left: 71px;
+  top: -5px;
+}
+
+.sideBarPet {
+  position: relative;
+  left: 30px;
+  top: 60px;  
+	
+}
+
+.avatarThoughtBubbleContainer {
+	position: absolute;
+	left: 160px;
+	top: -20px;
+	text-align: center;
+	
+}
+
+.avatarThoughtBubble {
+	position: absolute;
+	width: 100px;
+	cursor: pointer;
+}
+
+.avatarThought {
+	width: 30px;
+	position: absolute;
+	left: 38px;
+	top: 14px;
+	border-radius: 20px;
+}
+
+.avatarThoughtText {
+	position: absolute; 
+	width: 50px;
+	left: 30px;
+	top: 15px;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.experienceContainer {
+  width: 256px;
+  height: 70px;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+.experienceBar {
+  height: 31px;
+  margin: 2px 0 1px 0;
+  width: 220px;
+  box-sizing: border-box;
+  border: 2px solid black;
+  float: left;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.experienceSpanOne {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  background-color: #FF851B;
+  background-image: linear-gradient( center bottom, rgb(43, 194, 83) 37%, rgb(84, 240, 84) 69%);
+  box-shadow: inset 0 2px 9px rgba(255, 255, 255, 0.3), inset 0 -2px 6px rgba(0, 0, 0, 0.4);
+  /* transition: all 800ms; */
+}
+
+.experienceSpanTwo {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  background-color: #FFDC00;
+  background-image: linear-gradient( center bottom, rgb(43, 194, 83) 37%, rgb(84, 240, 84) 69%);
+  box-shadow: inset 0 2px 9px rgba(255, 255, 255, 0.3), inset 0 -2px 6px rgba(0, 0, 0, 0.4);
+  /* transition: all 800ms; */
+}
+
+.levelContainer {
+  width: 36px;
+  height: 70px;
+  box-sizing: border-box;
+  float: right;
+  text-align: center;
+}
+
+.level {
+  line-height: 20px;
+  border: 2px double black;
+  cursor: pointer;
+  color: white;
+  background-color: gray;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  position: absolute;
+  left: 226px;
+  top: 214px;
+}
+
+.vaultContainer {
+  height: 100px;
+  width: 256px;
+  box-sizing: border-box;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.goldContainer {
+  height: 100px;
+  width: 180px;
+  box-sizing: border-box;
+  border-right: 1px solid black;
+  float: left;
+  line-height: 100px;
+  text-align: center;
+}
+
+.goldImage {
+  height: 98px;
+  width: 178px;
+}
+
+.marketContainer {
+  height: 98px;
+  width: 76px;
+  box-sizing: border-box;
+  background-color: white;
+  float: left;
+}
+
+.marketImageContainer {
+  width: 60px;
+  height: 60px;
+  border-radius: 5px 0 0 5px;
+  margin: 20px 8px 20px 8px;
+  border: 1px solid black;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: center;
+}
+
+.marketImage {
+  width: 60px;
+  height: 50px;
+  border-radius: 5px 0 0 5px;
+}
+
+.marketImageText {
+  line-height: 10px;
+  color: black;
+  position: relative;
+  top: -11px;
+  font-size: 8px;
+}
+
+.buyApproval {
+  position: absolute;
+  top: 283px;
+  left: 248px;
+  width: 0;
+  height: 62px;
+  padding-top: 5px;
+  border-radius: 0 10px 10px 0;
+  box-sizing: border-box;
+  background-color: white;
+  font-size: 10px;
+  line-height: 19px;
+  text-align: center;
+  z-index: 99;
+  transition: all 400ms;
+}
+
+.buyButtonYes,
+.buyButtonNo {
+  cursor: pointer;
+  display: none;
+}
+
+.buyButtonYes {
+  color: green;
+  display: none;
+}
+
+.buyButtonNo {
+  color: red;
+  margin-top: 10px;
+}
+
+
+.sideBarNavigation {
+  font-size: 20px;
+}
+
+.interfaceButton,
+.questGlobalButton,
+.arenaButton {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+
+
+
+
+
+/* CONSOLE */
+
+.consoleContainer,
+.eventContainer,
+.colorContainer {
+  width: 384px;
+  height: 384px;
+  border: 1px solid black;
+  background-color: white;
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  z-index: 99;
+}
+
+.itemContainer,
+.questConsoleContainer {
+  width: 768px;
+  height: 768px;
+  border: 1px solid black;
+  background-color: white;
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+.questConsoleList {
+  list-style: none;
+}
+
+.questConsoleDay {
+  width: 400px;
+  height: 200px;
+  border: 1px solid black;
+  margin-bottom: 5px;
+}
+
+.questConsoleMainTask {
+  height: 50px;
+  background: lightgray;
+  border: 1px solid white;
+}
+
+.questConsoleOneTimeTask {
+  border: 1px solid gray;
+  height: 50px;
+  background: gray;
+}
+
+.questConsoleMainTaskDone,
+.questConsoleOneTimeTaskDone {
+  position: absolute;
+  right: 330px;
+  background: white;
+  width: 20px;
+  height: 20px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+
+
+.arenaConsoleContainer {
+  width: 410px;
+  height: 150px;
+  border: 1px solid black;
+  background-color: white;
+  box-sizing: border-box;
+  position: absolute;
+  top: 610px;
+  left: 50px;
+  display: none;
+  z-index: 99;
+}
+
+.consoleContainer span {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  margin: 5px;
+  background-color: lightgray;
+  border-radius: 25px;
+  text-align: center;
+  line-height: 60px;
+  cursor: pointer;
+}
+
+
+
+/* ITEM LISTS */
+
+.shopContainer {
+  width: 766px;
+  height: 400px;
+  border-bottom: 1px solid black;
+}
+
+.shopMenu {
+  width: 100%;
+  height: 50px;
+  float: left;
+  background-color: grey;
+  color: white;
+  border-bottom: 1px solid black; 
+  margin-bottom: 15px;
+}
+
+.shopMenu > span {
+	background-color: darkgrey;
+  color: white;
+  text-decoration: none; 
+  border: 1px solid black;
+  display: inline-block;
+  width: 120px;
+  height: 40px;
+  margin-top: 5px;
+  margin-left: 5px;  
+  box-sizing: border-box;
+  line-height: 40px;
+  text-align: center;
+  font-size: 17px;  
+  cursor: pointer;  
+	
+}
+
+.shopMenu > span:hover {
+ color:  #FFFFE0;	
+}
+
+.avatarShop { 
+ width: 48px;
+ position: relative;
+ top: 92px;
+ left: 130px;
+	
+}
+
+.shopPet {
+	position: relative;
+	top: 110px;
+	left: 32px;
+}
+
+.shopItemList {
+  list-style-type: none;
+  display: inline;
+  padding: 0;
+  
+}
+
+.shopItemListImage, .shopBackgroundImage {
+  width: 45px;
+  height: 45px;
+  border-radius: 5px;
+  margin: 11px 0 0 11px;
+  filter: grayscale(100%);
+  cursor: pointer;
+  border: 1px solid black;
+  transition: all 800ms;
+  padding: 10px;
+  
+}
+
+.shopItemBuyListContainer {
+	position: relative;
+	top: -334px;
+	left: 130px;
+}
+
+.shopItemBuyListContainer ul {
+	list-style-type: none;
+}
+
+.shopItemBuyListImagePrice {
+	font-size: 10px;
+	position: relative;
+	top: -5px;
+	left: -50px;
+}
+
+.shopItemBuyQuestionContainer {
+	position: relative;
+	left: -60px;
+	top: -70px;
+	line-height: 30px;
+	margin-bottom: -60px;
+}
+.shopItemListImage:hover {
+	filter: grayscale(0%);
+	
+}
+
+.shopSpeechBubbleContainer {
+	position: absolute;
+	width: 120px;
+	top: 30px;
+	left: 170px;
+	border-radius: 50%;
+}
+
+.shopSpeechBubble {
+	width: 120px;
+	position: absolute;
+	z-index: 10;
+}
+
+.shopSpeech {
+	font-size: 9px;
+	position: relative;
+	top: 13px;
+	left: 27px;
+	z-index: 11;
+	
+}
+
+.itemEquipped {
+  filter: grayscale(0%) !important;
+  transition: all 800ms;
+}
+
+.itemPreview {
+  width: 250px;
+  height: 250px;
+  background-size: 100% 100%;
+  background-color: lightgray;
+  background-image: url("http://res.cloudinary.com/gionisos/image/upload/v1497443338/BackgroundRed_nzpixc.png");
+  position: relative;
+  top: 75px;
+  left: 258px;
+}
+
+.avatarEquipped {
+  list-style-type: none;
+  position: relative; 
+  left: 480px;
+  top: -185px;
+}
+
+.avatarEquipped lh {
+  font-size: 20px;
+  text-decoration: underline;
+}
+
+
+/* Drops */
+
+.popUpNewStuff {
+	display: inline-block;
+	width: 300px;
+	height: 300px;
+	position: absolute;
+	top: 25%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+	z-index: 50;
+	background-color: white;
+	border: 4px double darkgrey;
+	text-align: center;
+	line-height: 30px;
+}
+
+.popUpNewStuff span {
+	font-size: 18px;
+	display: inline-block;
+	clear: both;
+	
+}
+
+
+.popUpImage {
+	float: left;
+	width: 80px;
+	height: 80px;
+	margin: 50px 0 30px 110px;
+	border: 3px solid black;
+	border-radius: 20px;
+	background-color: grey;
+	
+}
+
+.popUpContinue {
+	display: inline-block;
+	margin-top: 5px;
+	width: 80px;
+	height: 40px;
+	border: 1px solid black;
+	border-radius: 20px;
+	line-height: 40px;
+	background-color: black;
+	color: white;
+	cursor: pointer;
+}
+
+
+
+.show {
+  display: inline-block;
+}
+
+.hide {
+  display: none;
+}
+
+
+/* EVENTS */
+
+.eventList {
+  list-style-type: none;
+}
+
+
+
+/* COLOR TEST FIELD! */
+
+.colorBackground {
+  width: 100%;
+  height: 12.5%;
+  float: left;
+}
+
+
+/*red is really nice, the pink shade could be a good orange, the blue shade is good as well, */
+
+.bgRed {
+  background-color: hsl(0, 100%, 50%);
+}
+
+.bgBlue {
+  background-color: hsl(189, 100%, 28%);
+}
+
+.bgPink {
+  background-color: hsl(226, 100%, 40%);
+}
+
+.bgOrange {
+  background-color: hsl(22, 100%, 54%);
+}
+
+.bgYellow {
+  background-color: hsl(0, 100%, 50%);
+}
+
+.bgGreen {
+  background-color: hsl(85, 100%, 27%);
+}
+
+.bgBlack {
+  background-color: black;
+}
+
+.bgWhite {
+  background-color: white;
+}
+
+
+
+
+
+
+/* MAIN SCREEN */
+
+.mainScreen {
+  position: absolute;
+  width: 766px;
+  height: 766px;
+  left: 256px;
+}
+
+
+
+/* INTERFACE */
+
+.interface {
+  width: 766px;
+  height: 766px;
+  background-color: white;
+  box-sizing: border-box;
+  position: absolute;
+}
+
+.interfaceQuadrant {
+  width: 50%;
+  height: 50%;
+  border: 1px solid gray;
+  float: left;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+
+
+/* DAILY LIST */
+
+.dailyListItem, .dailyListAddContainer, .habitListAddContainer, .habitListItem, .masterListAddContainer, .masterListItem {
+  border: 1px solid black;
+  width: 298px;
+  height: 45px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  background-color: #F0FFF0;
+  line-height: 45px;
+  padding-left: 10px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.8);
+  list-style: none;
+  transition: all 1000ms;
+  font-size: 16px;
+  position: relative;
+}
+
+.dailyListItemDone, .habitListItemDone, .masterListItemDone {
+  float: right;
+  margin: 10px;
+  background-color: white;
+  width: 21px;
+  height: 21px;
+  border: 1px solid black;
+  cursor: pointer;
+  position: relative; 
+  font-size: 23px;
+}
+
+.dailyChecked, .toDoChecked, .habitChecked {
+  position: relative;
+  top: -11px;
+  left: -1px;
+}
+
+.dailyListItemDoneImage {
+  width: 21px;
+  height: 21px;
+  position: relative; 
+  top: -5px;
+}
+
+.spreeText {
+ position: absolute;
+ top: 350px;
+ left: 110px;
+ display: none;
+ transition: all 800ms;
+ cursor: pointer;
+}
+
+.dailyListItemHoverContainer {
+	position: absolute;
+	top: -53px;
+	left: 50px;
+	width: 200px;
+	min-height: 30px;
+	border: 1px solid darkgrey;
+	border-radius: 15px;
+	background-color: white;
+	display: inline-block;
+	font-size: 10px;
+	text-align: center;
+	line-height: 30px;
+	padding: 10px 0 10px 0;
+	border: 1px solid #000;
+}
+.dailyListItemHoverContainer:after, .dailyListItemHoverContainer:before {
+	top: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.dailyListItemHoverContainer:after {
+	border-color: rgba(252, 254, 255, 0);
+	border-top-color: #fcfeff;
+	border-width: 20px;
+	margin-left: -20px;
+}
+.dailyListItemHoverContainer:before {
+	border-color: rgba(0, 0, 0, 0);
+	border-top-color: #000;
+	border-width: 21px;
+	margin-left: -21px;
+}
+
+.dailyListAddContainer, .habitListAddContainer, .masterListAddContainer {
+  margin-left: 40px;
+  opacity: 0;
+  transition: all 1000ms;
+}
+
+.masterListAddContainer {
+	margin-left: 32px;
+	
+}
+
+.dailyListAdd, .habitListAdd, .masterListAdd {
+  float: left;
+  width: 25px;
+  height: 25px;
+  margin: 10px 0 0 127px;
+  border: 2px solid black;
+  border-radius: 50%;
+  line-height: 27px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.dailyListAddContainer:hover, .dailyListAdd {
+  opacity: 0.6 !important;
+}
+
+
+.dailyListItemTemporary, .habitListItemTemporary, .masterListItemTemporary {
+  border: 1px solid black;
+  width: 298px;
+  height: 45px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  background-color: #F0FFF0;
+  line-height: 45px;
+  padding-left: 10px;
+  color: rgba(0, 0, 0, 0.8);
+  list-style: none;
+}
+
+.masterListItemTemporary {
+	margin-left: 32px;
+	
+}
+
+.dailyListAddTitle, .habitListAddTitle, .masterListAddTitle{
+  border: 0;
+  outline: 0;
+  background-color: #F0FFF0; 
+  font-size: 16px;
+}
+
+.dailyListItemRight {
+  width: 310px;
+  height: 47px;
+  background-color: gray;
+  position: relative;
+  top: 45px;
+  background: linear-gradient(to right, #FABE4D, #FF5468);
+  opacity: 0.95;
+  text-align: center;
+  cursor: pointer;
+}
+
+
+.dailyListItemEdit, .dailyListItemDelete {
+  float: left;
+  width: 155px;
+  height: 45px;
+}
+
+.dailyListItemEdit:hover,
+.dailyListItemDelete:hover {
+  box-shadow: 0 4px 5px #888888;
+}
+
+
+.dailyListItemEditContainer {
+	width: 600px;
+	background-color: white;
+	border: 4px double darkgrey;
+	display: inline-block;
+	position: absolute;
+    top: 50%;
+    left: 50%;
+	z-index: 99;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+	text-align: center;
+	transition: all 1000ms ease;
+}
+
+.dailyListItemEditContainer > h1 {
+	font-size: 24px;
+    	
+	
+}
+
+.dailyListItemEditCategoryContainer {
+	width: 100%;
+	height: 62px;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	display: inline-block;
+	float: left;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+
+.dailyListItemEditCategoryContainer > div {
+	width: 16.66666666666667%;
+	height: 60px;
+	border-left: 1px solid black;
+	float: left;
+	box-sizing: border-box;
+    filter: grayscale(80%);
+}
+
+.dailyListItemEditCategoryContainer > div:hover {
+   filter: grayscale(0%);
+}
+
+
+.dailyListItemEditCategoryContainer :nth-child(1) {
+	background-color: red;
+}
+.dailyListItemEditCategoryContainer :nth-child(1) > img {
+	width: 50px;
+	margin-top: 5px;
+	background-color: red;
+}
+.dailyListItemEditCategoryContainer :nth-child(2) {
+	background-color: orange;
+}
+.dailyListItemEditCategoryContainer :nth-child(2) > img {
+	width: 50px;
+	margin-top: 5px;
+	background-color: orange;
+}
+.dailyListItemEditCategoryContainer :nth-child(3) {
+	background-color: blue;
+}
+.dailyListItemEditCategoryContainer :nth-child(3) > img {
+	width: 50px;
+	margin-top: 5px;
+	background-color: blue;
+}
+.dailyListItemEditCategoryContainer :nth-child(4) {
+	background-color: brown;
+}
+.dailyListItemEditCategoryContainer :nth-child(4) > img {
+	width: 50px;
+	margin-top: 5px;
+	background-color: brown;
+}
+.dailyListItemEditCategoryContainer :nth-child(5) {
+	background-color: green;
+}
+.dailyListItemEditCategoryContainer :nth-child(5) > img {
+	width: 50px;
+	margin-top: 5px;
+	background-color: green;
+}
+.dailyListItemEditCategoryContainer :nth-child(6) {
+	background-color: yellow;
+}
+.dailyListItemEditCategoryContainer :nth-child(6) > img {
+	width: 50px;
+	margin-top: 5px;
+	background-color: yellow;
+}
+
+.growContainerFade {
+	width: 100%;
+	height: 100%;
+	display: inline-block;
+	background-color: black;
+	position: absolute; 
+	top: 0;
+	left: 0;
+	z-index: 99;
+	opacity: 0.35;
+}
+
+
+.dailyListItemEditCancelButton, .dailyListItemEditSaveButton {
+    cursor: pointer;
+	width: 100px;
+	height: 50px;
+	display: inline-block;
+	border: 1px solid black;
+	background-color: darkgrey;
+	border-radius: 25px;
+	line-height:50px;
+	margin: 10px;
+}
+
+
+
+
+
+
+
+/* SKILLS IN TRAINING */
+
+.habitListAddContainer:hover, .habitListAdd {
+  opacity: 0.6;
+}
+
+
+
+
+
+
+
+
+/* TO DO LIST! */
+.toDoContainer {
+  float: left;
+  width: 360px;
+  height: 381px;
+  transition: 600ms ease;
+  box-sizing: border-box;
+}
+
+.toDoContainer>h1 , .dailyContainer>h1, .habitContainer>h1, .masterListHeader>h1 {
+  text-align: center;
+  font-size: 24px;
+  cursor: default;
+}
+
+
+.toDoListItem {
+  border: 1px solid black;
+  width: 298px;
+  height: 45px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  background-color: #F0FFF0;
+  line-height: 45px;
+  padding-left: 10px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.8);
+  list-style: none;
+}
+
+
+.masterListTransfer {
+  float: left;
+  background: linear-gradient(to right, white, gray);
+  width: 20px;
+  height: 381px;
+  transition: 600ms ease;
+  cursor: pointer; /* --> cursor arrow */
+}
+
+.toDoListTransfer {
+  float: left;
+  background: linear-gradient(to right, gray, white);
+  width: 20px;
+  height: 381px;
+  transition: 600ms ease;
+  cursor: pointer; /* <-- cursor arrow */
+}
+
+.masterListContainer {
+  width: 360px;
+  float: right;
+  transition: 600ms ease;
+}
+
+.masterListAddContainer:hover, .masterListAdd {
+  opacity: 0.6;
+}
+
+
+.masterListDeadline {
+  float: right;
+  position: relative;
+  top: -35px;
+  
+}
+
+.masterList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  top: 10px;
+}
+
+.masterListItem {
+  border: 1px solid black;
+  width: 298px;
+  height: 45px;
+  margin-bottom: 20px;
+  margin-left: 32px;
+  cursor: pointer;
+  background-color: #F0FFF0;
+  line-height: 45px;
+  padding-left: 10px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.8);
+  /* overflow: hidden; */
+}
+
+.masterListItemTitle {
+  float: left;
+  width: 180px;
+  font-weight: bold;
+}
+
+.toDoListItemDone {
+  float: right;
+  margin: 10px;
+  background-color: white;
+  width: 21px;
+  height: 21px;
+  border: 1px solid black;
+  font-size: 23px;
+}
+
+.masterListAddSteps {
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  line-height: 18px;
+  font-size: 10px;
+  text-align: center;
+  background-color: white;
+  border-radius: 50%;
+  position: relative;
+  top: -29px;
+  left: 126px;
+  opacity: 0;
+  transition: all 800ms;
+}
+
+
+.masterListItem:hover > .masterListAddSteps {
+  opacity: 1;
+}
+
+.masterListStep {
+  border: 1px solid black;
+  display: inline-block;
+  position: relative;
+  top: -21px;
+  left: 20px;
+  width: 280px;
+  height: 30px;
+  cursor: pointer;
+  background-color: #F0FFF0;
+  line-height: 45px;
+  text-align: center;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.masterListStepTitle {
+  float: left;
+  border: 0;
+  outline: 0;
+  background-color: #F0FFF0; 
+  font-size: 15px;
+  line-height: 25px;
+  margin-left: 7px;
+  padding-bottom: 1px;
+}
+
+.masterListItemRightContainer, .dailyListItemRightContainer {
+  position: relative;
+  float: left;
+  top: -46px;
+  left: -11px;
+  width: 0;
+  height: 0;
+}
+
+.masterListItemRight {
+  position: relative; 
+  left: -180px;
+  top: 45px;
+  width: 310px;
+  height: 47px;
+  background-color: gray;
+  background: linear-gradient(to right, #4DFA90, #FABE4D, #FF5468);
+  opacity: 0.95;
+  text-align: center;
+  z-index: 10;
+  float: left;
+}
+
+
+.masterListEditContainer {
+  width: 310px;
+  height: 0;
+  transition: all 800ms;
+  position: relative; 
+  top: 90px;
+  box-sizing: border-box;
+}
+
+.masterListEditContainerOpen {
+  height: 110px;
+  border: 1px solid black;
+  z-index: 20;
+  background-color: white;
+  cursor: default;
+}
+
+.masterListItemRightAdd, .masterListItemRightEdit, .masterListItemRightDelete{
+  width: 103px;
+  height: 47px;
+  float: left;
+}
+
+.masterListItemRightAdd:hover,
+.masterListItemRightEdit:hover,
+.masterListItemRightDelete:hover {
+  box-shadow: 0 4px 5px #888888;
+}
+/* END TO DO LIST */
+
+
+
+
+
+/* DROPS (PETS, etc.) */
+.shopPetList, .shopBackgroundList, .shopUsablesList {
+	list-style-type: none;
+	display: none;
+	margin: 0;
+	padding: 0;
+}
+
+.shopPetList {
+	padding: 0 0 0 40px;
+}
+
+
+.shopPetFood {
+	width: 60px;
+	height: 314px;
+	margin-top: -16px;
+	float: left;
+	background-color: grey;
+	border-right: 1px solid black;
+	display: none;
+	
+}
+
+
+@keyframes shopPetJump {
+  0% {
+    top: 110px;
+  }
+  25% {
+    top: 103px;
+  }
+  50% {
+    top: 110px;
+  }
+  75% {
+    top: 103px;
+  }
+  100% {
+   top: 110px;
+  }
+}
+
+
+
+.shopPetFoodList {
+	list-style-type: none;
+	padding: 4px;
+}
+.shopPetFoodListItem {
+	cursor: pointer;
+	z-index: 20;
+}
+
+
+.shopPetFoodAmount{
+  font-size: 10px;
+  position: relative;
+  top: -27px;
+  left: 35px;
+}
+
+.shopPetFoodListItemImage {
+	width: 35px;
+	height: 35px;
+	border: 1px solid black;	
+	padding: 7px;
+	border-radius: 50%;
+	background-color: lightgrey;
+	
+}
+
+
+.petImage {
+	display: inline;
+	width: 52px;
+	height: 45px;
+	padding: 10px;
+	filter: grayscale(100%);
+	transition: all 800ms;
+	border: 1px solid black;
+	border-radius: 20px;
+	background-color: lightgrey;
+}
+
+.petImageEquipped {
+	filter: grayscale(0%);
+	
+}
+
+
+.shopUsablesList li, .shopPetList li {
+	display: inline;
+	margin: 11px 0 0 11px;
+	
+}
+
+
+.usablesListImageContainer {
+ display: inline-block;
+ width: 60px;
+ height: 70px;
+ border: 1px solid black;	
+ border-radius: 5px;
+ overflow: hidden;
+ text-align: center;
+ font-size: 10px;
+}
+
+.usablesListImage { 
+  width: 60px;
+  height: 60px;
+  filter: grayscale(100%);
+  cursor: pointer;
+  transition: all 800ms;
+  border-bottom: 1px solid black;
+  background-color: lightgrey;
+}
+
+.usablesListImageText {
+	position: relative;
+	top: -3px;
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ARENA */
+
+.arenaOverlay {
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.92);
+  width: 1024px;
+  height: 768px;
+  border: 4px double darkgrey;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 9;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  display: none;
+}
+
+.arenaContainer {
+  width: 255px;
+  height: 450px;
+  border: 1px solid black;
+  background-color: white;
+  float: left;
+  margin-left: 170px;
+  margin-top: 150px;
+}
+
+#arenaAnimationCanvas {
+  position: absolute;
+  top: 170px;
+  left: 432px;
+  transition: all 400ms;
+}
+
+.opponentAvatarContainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 192px;
+  width: 255px;
+  box-sizing: border-box;
+  background-color: #A3320B;
+}
+
+#opponentAvatarCanvas {
+	height: 192px;
+    width: 255px;
+	
+	
+}
+
+.opponentAvatarImage {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  top: -190px;
+  left: 5px;
+  transform: translate(100%, 60%);
+  border-radius: 25%;
+}
+
+.arenaAvatarSkillList,
+.arenaOpponentSkillList {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  top: 190px;
+  list-style: none;
+  background: white;
+}
+
+.arenaAvatarSkillButton,
+.arenaOpponentSkillButton {
+  margin: 10px;
+  width: 140px;
+  height: 30px;
+  padding: 0 15px 11px !important;
+  font-size: 12px !important;
+  line-height: 30px;
+  font-weight: bold;
+  text-shadow: 1px 1px white;
+  color: black;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border: 1px solid #57D6C7;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  cursor: pointer;
+  background-color: #F0FFF0;
+  overflow: hidden;
+}
+
+@keyframes skillCooldown {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 140px;
+  }
+}
+
+.arenaSkillPointsCounter {
+  position: absolute;
+  top: 383px;
+  left: 375px;
+  z-index: 60;
+  font-size: 20px;
+}
+
+.arenaOpponentSkillPointsCounter {
+  position: absolute;
+  top: 383px;
+  left: 614px;
+  z-index: 60;
+  font-size: 20px;
+}
+
+.arenaStatContainer {
+  height: 185px;
+  width: 15px;
+  position: absolute;
+  top: 370px;
+  left: 426px;
+  font-size: 10px;
+  line-height: 30px;
+  text-align: center;
+  color: white;
+}
+
+.arenaStat {
+  height: 30px;
+  width: 15px;
+  display: inline-block;
+  box-sizing: border-box;
+  margin-bottom: 5px;
+  border: 1px solid black;
+  background-color: white;
+  border-radius: 0 5px 5px 0;
+}
+
+
+@keyframes arenaStatColor {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+
+
+.arenaConsoleLoadOpponent {
+  cursor: pointer;
+}
+
+.arenaConsoleButton {
+  cursor: pointer;
+  margin: 5px;
+}
