@@ -18,9 +18,16 @@
      </select>
      <!-- Select pets size -->
      <input type="range" min="0" max="10" v-model="petSize" @change="avatarImageLoad(); petJump();">
+     
 
-     <select v-model="itemSelected" @change="avatarImageLoad">
-      <option v-for="item in itemPlayGround" :value="item.number" >{{item.name}}</option>
+     <!-- Weapon Equip -->
+     <select v-model="weaponSelected" @change='avatarImageLoad'>
+      <option v-for="item in weaponFilter" :value="item.number">{{item.name}}</option>
+     </select>
+
+     <!-- Armor equip --> 
+     <select v-model="armorSelected" @change="avatarImageLoad">
+      <option v-for="item in armorFilter" :value="item.number" >{{item.name}}</option>
      </select>
     </div>
   </div>
@@ -107,6 +114,8 @@ avatarBackground = [
   equipped: false,
   },      
 ],
+
+//structure items with weapons / robes / etc. 
     itemPlayGround = [
   {
     number: 0,
@@ -128,7 +137,7 @@ avatarBackground = [
     category: "armor",
   descriptionShop: "Fancy Schmancy and a little bit of garlic",
   descriptionSideBar: "Is it going to fit?!",
-    coordinates: [132, 125],
+    coordinates: [42, 59],
     size: [60, 32],
   gold: 10,
   },
@@ -139,7 +148,7 @@ avatarBackground = [
     source: "http://res.cloudinary.com/gionisos/image/upload/v1497446755/weirdRobes_vgy0ru_quwuye.png",
     category: "armor",
   descriptionShop: "You will never get dirty with these ones!",
-    coordinates: [126, 123], // y , x for whatever reasons, le me!
+    coordinates: [42, 59], 
     size: [60, 36],
   gold: 15
   },
@@ -195,7 +204,7 @@ avatarBackground = [
     layer: 2,
     source: "http://res.cloudinary.com/gionisos/image/upload/v1497211148/55_18_j0wdw1.png",
     category: "armor",
-    coordinates: [128, 125],
+    coordinates: [42, 59],
     size: [60, 37],
   },
   {
@@ -215,7 +224,7 @@ avatarBackground = [
     source: "http://res.cloudinary.com/gionisos/image/upload/v1497211160/55_14_brpmlx.png",
     category: "weapon",
   descriptionShop: "A burning piece of steel",
-    coordinates: [105, 112] ,
+    coordinates: [7, 119],
     size: [40, 40], 
   },
   {
@@ -224,7 +233,7 @@ avatarBackground = [
     layer: 4,
     source: "http://res.cloudinary.com/gionisos/image/upload/v1497212849/latest_19_gnx49k.png",
     category: "shield",
-    coordinates: [125, 150],
+    coordinates: [27, 103],
     size: [40, 40], 
   },
   {
@@ -233,9 +242,9 @@ avatarBackground = [
     layer: 1,
     source: "http://res.cloudinary.com/gionisos/image/upload/v1498582495/apprentice_robe_xzmad0.png",
     category: "armor",
-    coordinates: [116, 130],
+    coordinates: [60, 119],
     size: [50, 60],
-  gold: 25,
+  gold: 25,  
   },
   {
     number: 13,
@@ -253,7 +262,7 @@ avatarBackground = [
     layer: 4,
     source: "http://res.cloudinary.com/gionisos/image/upload/v1498582495/apprentice_staff_j6u0ot.png",
     category: "weapon",
-    coordinates: [105, 96],
+    coordinates: [7, 49],
     size: [65,56],
   gold: 15,
   },
@@ -263,7 +272,7 @@ avatarBackground = [
     layer: 1,
     source: "http://res.cloudinary.com/gionisos/image/upload/v1499957110/pageArmor_xt3cww.png",
     category: "armor",
-    coordinates: [108, 125],
+    coordinates: [42, 59],
     size: [60, 65],
   gold: 25,
   },
@@ -310,21 +319,27 @@ export default {
       petSelected: "3",
       petSelectedName: "",
       petSize: 5,
-      itemSelected: "",
-    }
+      itemPlayGround: itemPlayGround,
+      weaponSelected: "4",
+      armorSelected: "1",
+          }
   },
   methods: {
-
 petJump: function() {
   $("#sideBarPet").css({
       animation: "petJump " + 0.8 + "s linear"
     });
 },
 
-
-
 avatarImageLoad: function() {
+// push itemselected to itemEquipped 
+
 let itemCategory = ["armor","shield","weapon","helmet","shoes"];
+
+avatar.equipped["armor"] = itemPlayGround[this.armorSelected];
+avatar.equipped["weapon"] = itemPlayGround[this.weaponSelected];
+
+
 
 
 // REMOVE OTHER VERSIONS OF YOU!
@@ -364,8 +379,7 @@ $("#avatarImage").css({
 });
 
 
-// Pet size multiplied by slider (0.1 - 1.0)
-
+// Adding items to character
 for (let i=0; i<4; i++){
  if (avatar.equipped[itemCategory[i]].length !== 0) {
  $("#avatarContainer").append(
@@ -378,6 +392,23 @@ for (let i=0; i<4; i++){
 $("#avatarContainer > img").hide().fadeIn(800);
 
 }
+  },
+  computed: {
+    // replace weapon with respective item category
+     weaponFilter: function() {
+       return this.itemPlayGround.filter(function(argument) {
+         if(argument.category === "weapon") {
+          return argument;
+         }
+     })
+   },
+   armorFilter: function() {
+       return this.itemPlayGround.filter(function(argument) {
+         if(argument.category === "armor") {
+          return argument;
+         }
+     })
+   }
   },
   mounted () {
   this.avatarImageLoad();

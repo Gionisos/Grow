@@ -62,9 +62,9 @@ health = this.health;
 },
 
 },
-  
+
 // INITIAL LOADING OF HEALTH BACKGROUND
-mounted: 
+mounted:
 function(){
 this.loadHealth();
 },
