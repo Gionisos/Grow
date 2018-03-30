@@ -1,5 +1,10 @@
-// ADD buttons to change attributes (list)
-// divide items in categories and put them in different selects
+// Make Avatar with string id - one array with all the elements?
+// make code more readable
+// random look function
+// make function to hit with a sword on click
+// don't use jquery + vue?
+// use small descriptive functions
+// Save variables
 
 <template>
   <div>
@@ -10,25 +15,43 @@
           </div>
         </div>
       </div>
+     <input id="avatarCreationNameInput" type="text"/>
     </div>
+
+
+
     <div id="loadAvatarConsole">
+
       <!-- Select your pet --> 
      <select v-model="petSelected" @change="avatarImageLoad">
       <option v-for="pet in pet" :value="pet.number" >{{pet.name}}</option>
      </select>
+
+     <br>
+
      <!-- Select pets size -->
      <input type="range" min="0" max="10" v-model="petSize" @change="avatarImageLoad(); petJump();">
      
 
-     <!-- Weapon Equip -->
+     <br><br>
+
+    <!-- buttons to customize body parts -->
+     <button class="buttonAvatarCreation" name="skin" @click="changeBodyPartButton">Skin++</button>
+     <button class="buttonAvatarCreation" name="hair_bangs" @click="changeBodyPartButton">Hair++</button>
+     <button class="buttonAvatarCreation" name="beard" @click="changeBodyPartButton">Beard++</button>
+
+     <br><br>
+    <!-- Weapon Equip -->
      <select v-model="weaponSelected" @change='avatarImageLoad'>
       <option v-for="item in weaponFilter" :value="item.number">{{item.name}}</option>
      </select>
-
+     <br><br>
      <!-- Armor equip --> 
      <select v-model="armorSelected" @change="avatarImageLoad">
       <option v-for="item in armorFilter" :value="item.number" >{{item.name}}</option>
      </select>
+     
+    
     </div>
   </div>
 </template>
@@ -36,9 +59,8 @@
 <script>
 
 // VARIABLES
-var petEquipped = "3",
-    // AVATAR BACKGROUND VARIABLES
-avatarBackground = [
+// AVATAR BACKGROUND VARIABLES
+var avatarBackground = [
   {
     number: 0,
     name: "background-red",
@@ -51,7 +73,15 @@ avatarBackground = [
     source: "http://res.cloudinary.com/gionisos/image/upload/v1497785371/BackgroundYellow_nzpixc_gcbil8.png",
     category: "background",
     size: [100, 100],
-  }],
+  },
+  {
+    number: 2,
+    name: "background-cherry-trees",
+    source: "static/raw_sprites/spritesmith/backgrounds/background_cherry_trees.png",
+    category: "background",
+    size: [100, 100],
+  },
+  ],
   backgroundsOwned = [],
 
 // PET VARIABLES
@@ -115,63 +145,200 @@ avatarBackground = [
   },      
 ],
 
+
 //structure items with weapons / robes / etc. 
-    itemPlayGround = [
+  body = [
   {
     number: 0,
-  name: "chainsaw",
-  layer: 4,
-  source: "http://res.cloudinary.com/gionisos/image/upload/a_29/v1497786925/chainsaw_klqmdz.png",
-  category: "weapon",
-  coordinates: [100, 98],
-  descriptionShop: "RHMMMM RHMMMM!",
-  descriptionSideBar: "It's so shiny!",
-    size: [55, 50],
-  gold: 50,
+    name: "no bodyPart",
+    layer: 1,
+    source: "static/raw_sprites/spritesmith/customize/skin/skin_ea8349.png",
+    coordinates: [19,32],
+    size: [85,85],
   },
   {
     number: 1,
-    name: "fancy party robes",
-    layer: 1,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1497446465/partyRobes_ej2rzu_tg5bps.png",
-    category: "armor",
-  descriptionShop: "Fancy Schmancy and a little bit of garlic",
-  descriptionSideBar: "Is it going to fit?!",
-    coordinates: [42, 59],
-    size: [60, 32],
-  gold: 10,
+    name: "white hair bangs",
+    layer: 3,
+    source: "static/raw_sprites/spritesmith/customize/hair/hair_bangs_1_ghostwhite.png",
+    category: "hair_bangs",
+    coordinates: [17,30],
+    size: [88,88],
   },
   {
     number: 2,
-    name: "weird costume",
+    name: "bear skin",
     layer: 1,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1497446755/weirdRobes_vgy0ru_quwuye.png",
-    category: "armor",
-  descriptionShop: "You will never get dirty with these ones!",
-    coordinates: [42, 59], 
-    size: [60, 36],
-  gold: 15
+    source: "static/raw_sprites/spritesmith/customize/skin/skin_bear.png",
+    category: "skin",
+    coordinates: [19,32],
+    size: [85,85],
   },
   {
     number: 3,
+    name: "midnight hair bangs",
+    layer: 3,
+    source: "static/raw_sprites/spritesmith/customize/hair/hair_bangs_1_midnight.png",
+    category: "hair_bangs",
+    coordinates: [17,30],
+    size: [88,88],
+  },
+  {
+    number: 4,
+    name: "aurora skin",
+    layer: 1,
+    source: "static/raw_sprites/spritesmith/customize/skin/skin_aurora.png",
+    category: "skin",
+    coordinates: [19,32],
+    size: [85,85],
+  },{
+    number: 5,
+    name: "halloween hair bangs",
+    layer: 3,
+    source: "static/raw_sprites/spritesmith/customize/hair/hair_bangs_1_halloween.png",
+    category: "hair_bangs",
+    coordinates: [19,32],
+    size: [85,85],
+  },{
+    number: 6,
+    name: "zombie hair bangs",
+    layer: 3,
+    source: "static/raw_sprites/spritesmith/customize/hair/hair_bangs_1_zombie.png",
+    category: "hair_bangs",
+    coordinates: [19,32],
+    size: [85,85],
+  },{
+    number: 7,
+    name: "aurora beard",
+    layer: 2,
+    source: "static/raw_sprites/spritesmith/customize/beards/hair_beard_1_aurora.png",
+    category: "beard",
+    coordinates: [19,32],
+    size: [85,85],
+  },{
+    number: 8,
+    name: "black beard",
+    layer: 2,
+    source: "static/raw_sprites/spritesmith/customize/beards/hair_beard_2_black.png",
+    category: "beard",
+    coordinates: [19,32],
+    size: [85,85],
+  },{
+    number: 9,
+    name: "midnight beard",
+    layer: 2,
+    source: "static/raw_sprites/spritesmith/customize/beards/hair_beard_2_midnight.png",
+    category: "beard",
+    coordinates: [19,32],
+    size: [85,85],
+  },{
+    number: 10,
+    name: "frost beard",
+    layer: 2,
+    source: "static/raw_sprites/spritesmith/customize/beards/hair_beard_1_frost.png",
+    category: "beard",
+    coordinates: [19,32],
+    size: [85,85],
+  },{
+    number: 11,
+    name: "midnight beard",
+    layer: 2,
+    source: "static/raw_sprites/spritesmith/customize/beards/hair_beard_3_midnight.png",
+    category: "beard",
+    coordinates: [19,32],
+    size: [85,85],
+  },{
+    number: 12,
+    name: " candicorn hair bangs",
+    layer: 3,
+    source: "static/raw_sprites/spritesmith/customize/hair/hair_bangs_2_candycorn.png",
+    category: "hair_bangs",
+    coordinates: [19,32],
+    size: [85,85],
+  },{
+    number: 13,
+    name: "orange hair bangs",
+    layer: 3,
+    source: "static/raw_sprites/spritesmith/customize/hair/hair_bangs_4_porange2.png",
+    category: "hair_bangs",
+    coordinates: [19,32],
+    size: [85,85],
+  },{
+    number: 14,
+    name: "skeleton skin",
+    layer: 1,
+    source: "static/raw_sprites/spritesmith/customize/skin/skin_skeleton2.png",
+    category: "skin",
+    coordinates: [19,32],
+    size: [85,85],
+  },{
+    number: 15,
+    name: "winterstar skin",
+    layer: 1,
+    source: "static/raw_sprites/spritesmith/customize/skin/skin_winterstar.png",
+    category: "skin",
+    coordinates: [19,32],
+    size: [85,85],
+  },{
+    number: 16,
+    name: "wolf skin",
+    layer: 1,
+    source: "static/raw_sprites/spritesmith/customize/skin/skin_wolf.png",
+    category: "skin",
+    coordinates: [19,32],
+    size: [85,85],
+  },{
+    number: 17,
+    name: "dapper skin",
+    layer: 1,
+    source: "static/raw_sprites/spritesmith/customize/skin/skin_dapper.png",
+    category: "skin",
+    coordinates: [19,32],
+    size: [85,85],
+  },
+  {
+    number: 18,
+    name: "white skin",
+    layer: 1,
+    source: "static/raw_sprites/spritesmith/customize/skin/skin_ea8349.png",
+    category: "skin",
+    coordinates: [19,32],
+    size: [85,85],
+  },
+
+  ],
+
+
+
+
+
+    item = [
+  {
+  number: 0,
+  name: "no item",
+  category: "weapon"
+  },
+  {
+    number: 1,
     name: "basic sword",
     layer: 4,
     source: "http://res.cloudinary.com/gionisos/image/upload/v1497211196/55_9_f43pm3.png",
     category: "weapon",
-    coordinates: [112, 117],
+    coordinates: [35,70],
     size: [35, 35],
   },
   {
-    number: 4,
-    name: "fancy sword",
+    number: 2,
+    name: "apprentice staff",
     layer: 4,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1497211188/55_10_uuuedo.png",
+    source: "http://res.cloudinary.com/gionisos/image/upload/v1498582495/apprentice_staff_j6u0ot.png",
     category: "weapon",
-    coordinates: [109, 115],
-    size: [35, 35],
+    coordinates: [7, 49],
+    size: [68,60],
+  gold: 15,
   },
   {
-    number: 5,
+    number: 3,
     name: "rusty hat",
     layer: 2,
     source: "http://res.cloudinary.com/gionisos/image/upload/v1497210647/55_22_apqpad.png",
@@ -180,7 +347,7 @@ avatarBackground = [
     size: [64, 44],
   },
   {
-    number: 6,
+    number: 4,
     name: "viking hat",
     layer: 2,
     source: "http://res.cloudinary.com/gionisos/image/upload/v1497211123/55_23_hcoanh.png",
@@ -189,46 +356,26 @@ avatarBackground = [
     size: [65, 45],
   },
   {
-    number: 7,
-    name: "Axe",
-    layer: 4,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1497211178/55_11_jgeinf.png",
-    category: "weapon",
-    coordinates:  [92, 102],
-    size: [50, 50],
-  
-  },
-  {
-    number: 8,
+    number: 5,
     name: "warrior armor",
     layer: 2,
     source: "http://res.cloudinary.com/gionisos/image/upload/v1497211148/55_18_j0wdw1.png",
     category: "armor",
-    coordinates: [42, 59],
-    size: [60, 37],
+    coordinates: [39, 79],
+    size: [66, 42],
+  },
+ {
+  number: 6,
+  name: "hitchhikers suits",
+  layer: 1,
+  source: "http://res.cloudinary.com/gionisos/image/upload/v1499957110/pageArmor_xt3cww.png",
+  category: "armor",
+  coordinates: [42, 59],
+  size: [60, 65],
+  gold: 25,
   },
   {
-    number: 9,
-    name: "Welcome to the Club",
-    layer: 4,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1497211169/55_12_hlq2hd.png",
-    category: "weapon",
-  descriptionShop: "Who does not like <br> a little bit of clubbing <br> once in a while?",
-    coordinates: [92, 103],
-    size: [50, 50],
-  },
-  {
-    number: 10,
-    name: "fiery sword",
-    layer: 4,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1497211160/55_14_brpmlx.png",
-    category: "weapon",
-  descriptionShop: "A burning piece of steel",
-    coordinates: [7, 119],
-    size: [40, 40], 
-  },
-  {
-    number: 11,
+    number: 7,
     name: "golden shield",
     layer: 4,
     source: "http://res.cloudinary.com/gionisos/image/upload/v1497212849/latest_19_gnx49k.png",
@@ -237,72 +384,43 @@ avatarBackground = [
     size: [40, 40], 
   },
   {
-    number: 12,
-    name: "apprentice robe",
-    layer: 1,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1498582495/apprentice_robe_xzmad0.png",
-    category: "armor",
-    coordinates: [60, 119],
-    size: [50, 60],
-  gold: 25,  
-  },
-  {
-    number: 13,
-    name: "apprentice hat",
-    layer: 2,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1498582495/apprentice_hat_azxwzy.png",
-    category: "helmet",
-    coordinates: [78, 123],
-    size: [65, 45],
-  gold: 20,
-  },
-  {
-    number: 14,
-    name: "apprentice staff",
+    number: 8,
+    name: "Bad Ass Sword",
     layer: 4,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1498582495/apprentice_staff_j6u0ot.png",
+    source: 'static/raw_sprites/spritesmith/gear/weapon/weapon_special_1.png',
     category: "weapon",
-    coordinates: [7, 49],
-    size: [65,56],
-  gold: 15,
+    coordinates: [26, 35],
+    size: [60,80], 
   },
   {
-    number: 15,
-    name: "hitchhikers suits",
-    layer: 1,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1499957110/pageArmor_xt3cww.png",
-    category: "armor",
-    coordinates: [42, 59],
-    size: [60, 65],
-  gold: 25,
+  number: 9,
+  name: "chainsaw",
+  layer: 4,
+  source: "http://res.cloudinary.com/gionisos/image/upload/a_29/v1497786925/chainsaw_klqmdz.png",
+  category: "weapon",
+  descriptionShop: "RHMMMM RHMMMM!",
+  descriptionSideBar: "It's so shiny!",
+  coordinates: [16,54],
+  size: [55, 50],
+  gold: 50,
   },
 ];
 
 var itemsEquipped = [],
-  avatar = {
-  equipped: {
-    shield: "",
-    weapon: {
-    number: 14,
-    name: "apprentice staff",
-    layer: 4,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1498582495/apprentice_staff_j6u0ot.png",
-    category: "weapon",
-    coordinates: [7, 49],
-    size: [65,56],
-  },
-    armor: {
-    number: 15,
-    name: "hitchhikers suits",
-    layer: 1,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1499957110/pageArmor_xt3cww.png",
-    category: "armor",
-    coordinates: [42, 59],
-    size: [60, 65],
-  gold: 25,
-  },
-    helmet: "",
-    shoes: ""
+  
+  avatar = 
+  {
+    body: {
+      skin: 18,
+      hair_bangs: 13,
+      beard: 11,
+    },
+    equipped: {
+      shield: 0,
+      weapon: 2,
+      armor: 6,
+      helmet: 0,
+      shoes: 0
   }};
 
 
@@ -314,44 +432,84 @@ export default {
   name: 'loadAvatar',
   data() {
     return {
-      itemPlayGround: itemPlayGround,
+      item: item,
       pet: pet,
       petSelected: "3",
       petSelectedName: "",
       petSize: 5,
-      itemPlayGround: itemPlayGround,
-      weaponSelected: "4",
-      armorSelected: "1",
-          }
+      weaponSelected: avatar.equipped.weapon,
+      armorSelected: avatar.equipped.armor,
+      skinSelected: avatar.body.skin,
+      hairSelected: avatar.body.hair_bangs,
+      beardSelected: avatar.body.beard,
+      body: body,
+      }
   },
   methods: {
+
+// making your pet jump on growing!
 petJump: function() {
   $("#sideBarPet").css({
       animation: "petJump " + 0.8 + "s linear"
     });
 },
 
-avatarImageLoad: function() {
-// push itemselected to itemEquipped 
 
+
+
+//the problem with the updating is due to the reactivity caveats. I need to save the variable inside the data object to make it reactive. 
+
+changeBodyPartButton: function(){
+  let bodyFilter = this.body.filter(function(element) {
+  // if number that is passed in is the same as avatar.... category == this way you know if its skin or beard
+         if(element.category === event.target.name) {
+          return element;
+         }});
+  
+
+let bodyPartNames = ["skinSelected", "hairSelected", "beardSelected"];
+let bodyPartWhich = "";
+if (event.target.name == "skin"){
+  bodyPartWhich = 0;
+} else if (event.target.name == "hair_bangs"){
+  bodyPartWhich = 1;
+} else if (event.target.name == "beard"){
+  bodyPartWhich = 2;
+} else {
+  return alert("Event.Target.Name doesn't match bodypart");
+}
+
+
+for(let i=0;i<bodyFilter.length; i++){
+  if(this[bodyPartNames[bodyPartWhich]] === bodyFilter[i].number ){
+    this[bodyPartNames[bodyPartWhich]] = bodyFilter[i+1].number;
+    break;
+  } else if(this[bodyPartNames[bodyPartWhich]] === bodyFilter[bodyFilter.length-1].number){
+    this[bodyPartNames[bodyPartWhich]] = bodyFilter[0].number;
+    break;
+  }
+}
+  this.avatarImageLoad();
+},
+
+avatarImageLoad: function() {
+
+// push itemselected to itemEquipped 
 let itemCategory = ["armor","shield","weapon","helmet","shoes"];
 
-avatar.equipped["armor"] = itemPlayGround[this.armorSelected];
-avatar.equipped["weapon"] = itemPlayGround[this.weaponSelected];
-
-
+ avatar.equipped.weapon = this.weaponSelected;
+ avatar.equipped.armor = this.armorSelected;
+ avatar.body.skin = this.skinSelected;
+ avatar.body.hair_bangs = this.hairSelected;
+ avatar.body.beard = this.beardSelected;
 
 
 // REMOVE OTHER VERSIONS OF YOU!
 $("#avatarContainer").children().remove();
 
-// AvatarImageFloatingIsland 
-$("#avatarContainer").append('<div id="avatarContainerBackgroundDiv"><img id="avatarContainerBackground" src="http://res.cloudinary.com/gionisos/image/upload/v1497889280/avatarImageBackground_fye7om_a3z0mi.png"></img></div>');
-$("#avatarContainerBackgroundDiv").hide().fadeIn(800);
-
 // linking up everything to one location and moving it relative from that point!
 var avatarCoordinateX = 52, 
-    avatarCoordinateY = 4;
+    avatarCoordinateY = 40;
 
 // ATTACH ITEMS TO AVATAR RELATIVE TO POSITION 
 if (this.petSelected !== ""){
@@ -369,46 +527,57 @@ $("#sideBarPet").css({
    "left":avatarCoordinateX + pet[this.petSelected].coordinates[0]
 });}
 
-// Append Example Avatar
-$("#avatarContainer").append('<img id="avatarImage" src="http://res.cloudinary.com/gionisos/image/upload/v1497443267/avatarWithoutBackground_oal8a6.png"></img>'); 
 
-// Put avatar into random location
-$("#avatarImage").css({
-   "top": avatarCoordinateY,
-   "left":avatarCoordinateX
-});
 
+
+
+// creating character out of several pieces 
+let avatarBodyParts = ["skin", "hair_bangs", "beard"];
+
+for (let i=0; i<3; i++){
+ if (body[avatar.body[avatarBodyParts[i]]].length !== 0 && body[avatar.body[avatarBodyParts[i]]].number !== 0) {
+ $("#avatarContainer").append(
+      "<img src='" + body[avatar.body[avatarBodyParts[i]]].source +
+        "' alt='" + body[avatar.body[avatarBodyParts[i]]].name + 
+        "' value='" + avatarBodyParts[i] + "Equipped" +  "' style=' width:" + body[avatar.body[avatarBodyParts[i]]].size[0]  + "px; height:" + body[avatar.body[avatarBodyParts[i]]].size[1] +  
+        "px; position:absolute;top:" + (body[avatar.body[avatarBodyParts[i]]].coordinates[1] + avatarCoordinateY) + "px;left:" + (body[avatar.body[avatarBodyParts[i]]].coordinates[0] + avatarCoordinateX) + "px; z-index:"+ body[avatar.body[avatarBodyParts[i]]].layer + "'>");
+}};
 
 // Adding items to character
 for (let i=0; i<4; i++){
- if (avatar.equipped[itemCategory[i]].length !== 0) {
+ if (item[avatar.equipped[itemCategory[i]]].length !== 0 && item[avatar.equipped[itemCategory[i]]].number !== 0) {
  $("#avatarContainer").append(
-      "<img src='" + avatar.equipped[itemCategory[i]].source +
-        "' alt='" + avatar.equipped[itemCategory[i]].name + 
-        "' value='" + itemCategory[i] + "Equipped" +  "' style=' width:" + avatar.equipped[itemCategory[i]].size[0]  + "px; height:" + avatar.equipped[itemCategory[i]].size[1] +  
-        "px; position:absolute;top:" + (avatar.equipped[itemCategory[i]].coordinates[1] + avatarCoordinateY) + "px;left:" + (avatar.equipped[itemCategory[i]].coordinates[0] + avatarCoordinateX) + "px; z-index:"+ avatar.equipped[itemCategory[i]].layer + "'>");
+      "<img src='" + item[avatar.equipped[itemCategory[i]]].source +
+        "' alt='" + item[avatar.equipped[itemCategory[i]]].name + 
+        "' value='" + itemCategory[i] + "Equipped" +  "' style=' width:" + item[avatar.equipped[itemCategory[i]]].size[0]  + "px; height:" + item[avatar.equipped[itemCategory[i]]].size[1] +  
+        "px; position:absolute;top:" + (item[avatar.equipped[itemCategory[i]]].coordinates[1] + avatarCoordinateY) + "px;left:" + (item[avatar.equipped[itemCategory[i]]].coordinates[0] + avatarCoordinateX) + "px; z-index:"+ item[avatar.equipped[itemCategory[i]]].layer + "'>");
 }}
 
-$("#avatarContainer > img").hide().fadeIn(800);
+// $("#avatarContainer > img").hide().fadeIn(800);
 
 }
   },
   computed: {
     // replace weapon with respective item category
-     weaponFilter: function() {
-       return this.itemPlayGround.filter(function(argument) {
+     weaponFilter: function(element) {
+      
+      //Problemkind
+      // alert(element.name);
+       return this.item.filter(function(argument) {
          if(argument.category === "weapon") {
           return argument;
          }
      })
    },
    armorFilter: function() {
-       return this.itemPlayGround.filter(function(argument) {
+       return this.item.filter(function(argument) {
          if(argument.category === "armor") {
           return argument;
          }
      })
    }
+
+
   },
   mounted () {
   this.avatarImageLoad();
@@ -419,20 +588,27 @@ $("#avatarContainer > img").hide().fadeIn(800);
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-
+  body{
+    background-color: #464646;
+  }
 #sideBar{
   width: 256px;
   height: 100%;
-  position: absolute;
-  top: 27px;
-  float: left;
-  background-color: white;
+  position: relative;
+  left: 50%;
+  top: 15%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  
 }
 
 #avatarContainer {
   height: 192px;
   width: 255px;
   background-color: #A3320B;
+
+  background-image: url("../../static/raw_sprites/spritesmith/backgrounds/background_autumn_forest.png");
+  background-size:cover;
   -webkit-transition: background-image 0.5s;
   -moz-transition: background-image 0.5s;
   -ms-transition: background-image 0.5s;
@@ -463,24 +639,31 @@ $("#avatarContainer > img").hide().fadeIn(800);
   z-index: 10;
 }
 
-#avatarImage {
-  width: 48px; /*width changed from 36 to 48! */
-  transform: translate(100%, 60%);
-  border-radius: 25%;
-  color: red;
-  position: absolute;
-}
-
 #sideBarPet {
   position: absolute;
 }
+
+#avatarCreationNameInput {
+  position: relative;
+  top: 5px;
+  left: 40px;
+  text-align: center;
+}
+
 
 #loadAvatarConsole {
   height: 200px;
   width: 400px;
   background-color: lightgrey;
-  position: absolute;
-  top: 230px;
+  position: relative;
+  margin-top: 15px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.buttonAvatarCreation{
+  margin-left: 45px;
 }
 
 @keyframes petJump {
