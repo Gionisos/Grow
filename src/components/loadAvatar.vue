@@ -1,4 +1,3 @@
-// Make Avatar with string id - one array with all the elements?
 // make code more readable
 // random look function
 // make function to hit with a sword on click
@@ -39,6 +38,7 @@
      <button class="buttonAvatarCreation" name="skin" @click="changeBodyPartButton">Skin++</button>
      <button class="buttonAvatarCreation" name="hair_bangs" @click="changeBodyPartButton">Hair++</button>
      <button class="buttonAvatarCreation" name="beard" @click="changeBodyPartButton">Beard++</button>
+     <button class="buttonAvatarCreation" @click="randomLookButton">Random</button>
 
      <br><br>
     <!-- Weapon Equip -->
@@ -435,14 +435,12 @@ export default {
       item: item,
       pet: pet,
       petSelected: "3",
-      petSelectedName: "",
       petSize: 5,
       weaponSelected: avatar.equipped.weapon,
       armorSelected: avatar.equipped.armor,
       skinSelected: avatar.body.skin,
       hairSelected: avatar.body.hair_bangs,
       beardSelected: avatar.body.beard,
-      body: body,
       }
   },
   methods: {
@@ -457,10 +455,9 @@ petJump: function() {
 
 
 
-//the problem with the updating is due to the reactivity caveats. I need to save the variable inside the data object to make it reactive. 
-
+// Button to switch between differen body parts: One button to switch them all!
 changeBodyPartButton: function(){
-  let bodyFilter = this.body.filter(function(element) {
+  let bodyFilter = body.filter(function(element) {
   // if number that is passed in is the same as avatar.... category == this way you know if its skin or beard
          if(element.category === event.target.name) {
           return element;
@@ -491,6 +488,28 @@ for(let i=0;i<bodyFilter.length; i++){
 }
   this.avatarImageLoad();
 },
+
+
+randomLookButton: function() {
+
+let bodyPartCategory = ["skin", "hair_bangs", "beard"],
+    bodyPartName = ["skinSelected", "hairSelected", "beardSelected"];
+
+for(let i=0; i<bodyPartCategory.length; i++){
+var bodyFilter = body.filter(function(element) {
+         if(element.category === bodyPartCategory[i]) {
+          return element;
+         }});
+
+
+this[bodyPartName[i]] = bodyFilter[(Math.floor(Math.random() * bodyFilter.length))].number;
+
+}
+
+this.avatarImageLoad();
+},
+
+
 
 avatarImageLoad: function() {
 
@@ -663,7 +682,7 @@ for (let i=0; i<4; i++){
 }
 
 .buttonAvatarCreation{
-  margin-left: 45px;
+  margin-left: 25px;
 }
 
 @keyframes petJump {
