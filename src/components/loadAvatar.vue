@@ -22,14 +22,14 @@
     <div id="loadAvatarConsole">
 
       <!-- Select your pet --> 
-     <select v-model="petSelected" @change="avatarImageLoad">
+     <select v-model="petSelected" @change="petImageLoad">
       <option v-for="pet in pet" :value="pet.number" >{{pet.name}}</option>
      </select>
 
      <br>
 
      <!-- Select pets size -->
-     <input type="range" min="0" max="10" v-model="petSize" @change="avatarImageLoad(); petJump();">
+     <input type="range" min="0" max="10" v-model="petSize" @change="petImageLoad(); petJump();">
      
 
      <br><br>
@@ -42,12 +42,12 @@
 
      <br><br>
     <!-- Weapon Equip -->
-     <select v-model="weaponSelected" @change='avatarImageLoad'>
+     <select v-model="weaponSelected" @change='avatarEquipmentLoad'>
       <option v-for="item in weaponFilter" :value="item.number">{{item.name}}</option>
      </select>
      <br><br>
      <!-- Armor equip --> 
-     <select v-model="armorSelected" @change="avatarImageLoad">
+     <select v-model="armorSelected" @change="avatarEquipmentLoad">
       <option v-for="item in armorFilter" :value="item.number" >{{item.name}}</option>
      </select>
      
@@ -60,7 +60,11 @@
 
 // VARIABLES
 // AVATAR BACKGROUND VARIABLES
-var avatarBackground = [
+ 
+// linking up everything to one location and moving it relative from that point!
+var avatarCoordinateX = 52, 
+    avatarCoordinateY = 40,
+    avatarBackground = [
   {
     number: 0,
     name: "background-red",
@@ -441,19 +445,10 @@ export default {
       skinSelected: avatar.body.skin,
       hairSelected: avatar.body.hair_bangs,
       beardSelected: avatar.body.beard,
+      coordinatesWithPet: false
       }
   },
   methods: {
-
-// making your pet jump on growing!
-petJump: function() {
-  $("#sideBarPet").css({
-      animation: "petJump " + 0.8 + "s linear"
-    });
-},
-
-
-
 
 // Button to switch between differen body parts: One button to switch them all!
 changeBodyPartButton: function(){
@@ -486,8 +481,14 @@ for(let i=0;i<bodyFilter.length; i++){
     break;
   }
 }
-  this.avatarImageLoad();
+  // remove old bodyPart
+  $('#avatarContainer img[alt="' + body[avatar.body[event.target.name]].name + '"]').remove();
+  
+  // sew new bodyPart to body
+  this.avatarBodyLoad();
 },
+
+
 
 
 randomLookButton: function() {
@@ -496,46 +497,94 @@ let bodyPartCategory = ["skin", "hair_bangs", "beard"],
     bodyPartName = ["skinSelected", "hairSelected", "beardSelected"];
 
 for(let i=0; i<bodyPartCategory.length; i++){
+
+//filter bodyparts by category
 var bodyFilter = body.filter(function(element) {
          if(element.category === bodyPartCategory[i]) {
           return element;
          }});
 
+//remove old bodyparts
+$('#avatarContainer img[alt="' + body[avatar.body[bodyPartCategory[i]]].name + '"]').remove();
 
+//change bodyparts to random new number 
 this[bodyPartName[i]] = bodyFilter[(Math.floor(Math.random() * bodyFilter.length))].number;
-
 }
 
-this.avatarImageLoad();
+//sew new bodyparts to body
+this.avatarBodyLoad();
+},
+
+avatarBodyLoad: function(){
+
+// link avatar up to variables in data object
+avatar.body.skin = this.skinSelected;
+avatar.body.hair_bangs = this.hairSelected;
+avatar.body.beard = this.beardSelected;
+
+
+// creating character out of several pieces 
+let bodyPartCategory = ["skin", "hair_bangs", "beard"];
+
+for (let i=0; i<3; i++){
+ if (body[avatar.body[bodyPartCategory[i]]].length !== 0 && body[avatar.body[bodyPartCategory[i]]].number !== 0) {
+ $("#avatarContainer").append(
+      "<img src='" + body[avatar.body[bodyPartCategory[i]]].source +
+        "' alt='" + body[avatar.body[bodyPartCategory[i]]].name + 
+        "' value='" + bodyPartCategory[i] + "Equipped" +  "' style=' width:" + body[avatar.body[bodyPartCategory[i]]].size[0]  + "px; height:" + body[avatar.body[bodyPartCategory[i]]].size[1] +  
+        "px; position:absolute;top:" + (body[avatar.body[bodyPartCategory[i]]].coordinates[1] + avatarCoordinateY) + "px;left:" + (body[avatar.body[bodyPartCategory[i]]].coordinates[0] + avatarCoordinateX) + "px; z-index:"+ body[avatar.body[bodyPartCategory[i]]].layer + "'>");
+}};
+
 },
 
 
+avatarEquipmentLoad: function() {
 
-avatarImageLoad: function() {
-
-// push itemselected to itemEquipped 
-let itemCategory = ["armor","shield","weapon","helmet","shoes"];
-
- avatar.equipped.weapon = this.weaponSelected;
- avatar.equipped.armor = this.armorSelected;
- avatar.body.skin = this.skinSelected;
- avatar.body.hair_bangs = this.hairSelected;
- avatar.body.beard = this.beardSelected;
-
-
-// REMOVE OTHER VERSIONS OF YOU!
-$("#avatarContainer").children().remove();
-
-// linking up everything to one location and moving it relative from that point!
-var avatarCoordinateX = 52, 
+// Fix position of character to a position / problemkind, find a way to remove this 
+    avatarCoordinateX = 52, 
     avatarCoordinateY = 40;
 
-// ATTACH ITEMS TO AVATAR RELATIVE TO POSITION 
+let itemCategory = ["armor","shield","weapon","helmet","shoes"],
+    itemCategorySelected = ["armorSelected","shieldSelected","weaponSelected","helmetSelected","shoesSelected"];
+
+// Adding items to character
+for (let i=0; i<4; i++){
+ if (item[avatar.equipped[itemCategory[i]]].length !== 0 && item[avatar.equipped[itemCategory[i]]].number !== 0) {
+ 
+ // Remove old items
+ $('#avatarContainer img[alt="' + item[avatar.equipped[itemCategory[i]]].name + '"]').remove();
+
+// link avatar up to variables in data object
+ avatar.equipped[itemCategory[i]] = this[itemCategorySelected[i]];
+
+// Append new items
+ $("#avatarContainer").append(
+      "<img src='" + item[avatar.equipped[itemCategory[i]]].source +
+        "' alt='" + item[avatar.equipped[itemCategory[i]]].name + 
+        "' value='" + itemCategory[i] + "Equipped" +  "' style=' width:" + item[avatar.equipped[itemCategory[i]]].size[0]  + "px; height:" + item[avatar.equipped[itemCategory[i]]].size[1] +  
+        "px; position:absolute;top:" + (item[avatar.equipped[itemCategory[i]]].coordinates[1] + avatarCoordinateY) + "px;left:" + (item[avatar.equipped[itemCategory[i]]].coordinates[0] + avatarCoordinateX) + "px; z-index:"+ item[avatar.equipped[itemCategory[i]]].layer + "'>");
+
+}}
+
+// $("#avatarContainer > img").hide().fadeIn(800);
+
+},
+
+petImageLoad: function() {
+
+ // ATTACH ITEMS TO AVATAR RELATIVE TO POSITION 
 if (this.petSelected !== ""){
 
-//IF PET IS EQUIPPED MAKE SPACE WITH AVATAR
+//IF PET IS EQUIPPED MAKE SPACE WITH AVATAR / Problemkind shift character to far 
+if(this.coordinatesWithPet = false) {
 avatarCoordinateX += 19;
 avatarCoordinateY -= 9;
+this.coordinatesWithPet = true;
+}
+
+ // Get rid of old pet!
+ $('#avatarContainer img[id="sideBarPet"]').remove();
+
 
 //APPEND PET
 $("#avatarContainer").append('<img id="sideBarPet" style="width:'+ (pet[this.petSelected].size[0] * (0.5 + (0.1 * this.petSize)))  +'px; height:'+ (pet[this.petSelected].size[1] * (0.5 + (0.1 * this.petSize))) +'px" src="'+ pet[this.petSelected].source +'"></img>');
@@ -544,38 +593,23 @@ $("#avatarContainer").append('<img id="sideBarPet" style="width:'+ (pet[this.pet
 $("#sideBarPet").css({
    "top": avatarCoordinateY + pet[this.petSelected].coordinates[1],
    "left":avatarCoordinateX + pet[this.petSelected].coordinates[0]
-});}
-
-
-
-
-
-// creating character out of several pieces 
-let avatarBodyParts = ["skin", "hair_bangs", "beard"];
-
-for (let i=0; i<3; i++){
- if (body[avatar.body[avatarBodyParts[i]]].length !== 0 && body[avatar.body[avatarBodyParts[i]]].number !== 0) {
- $("#avatarContainer").append(
-      "<img src='" + body[avatar.body[avatarBodyParts[i]]].source +
-        "' alt='" + body[avatar.body[avatarBodyParts[i]]].name + 
-        "' value='" + avatarBodyParts[i] + "Equipped" +  "' style=' width:" + body[avatar.body[avatarBodyParts[i]]].size[0]  + "px; height:" + body[avatar.body[avatarBodyParts[i]]].size[1] +  
-        "px; position:absolute;top:" + (body[avatar.body[avatarBodyParts[i]]].coordinates[1] + avatarCoordinateY) + "px;left:" + (body[avatar.body[avatarBodyParts[i]]].coordinates[0] + avatarCoordinateX) + "px; z-index:"+ body[avatar.body[avatarBodyParts[i]]].layer + "'>");
-}};
-
-// Adding items to character
-for (let i=0; i<4; i++){
- if (item[avatar.equipped[itemCategory[i]]].length !== 0 && item[avatar.equipped[itemCategory[i]]].number !== 0) {
- $("#avatarContainer").append(
-      "<img src='" + item[avatar.equipped[itemCategory[i]]].source +
-        "' alt='" + item[avatar.equipped[itemCategory[i]]].name + 
-        "' value='" + itemCategory[i] + "Equipped" +  "' style=' width:" + item[avatar.equipped[itemCategory[i]]].size[0]  + "px; height:" + item[avatar.equipped[itemCategory[i]]].size[1] +  
-        "px; position:absolute;top:" + (item[avatar.equipped[itemCategory[i]]].coordinates[1] + avatarCoordinateY) + "px;left:" + (item[avatar.equipped[itemCategory[i]]].coordinates[0] + avatarCoordinateX) + "px; z-index:"+ item[avatar.equipped[itemCategory[i]]].layer + "'>");
-}}
-
-// $("#avatarContainer > img").hide().fadeIn(800);
-
+});} else {
+  this.coordinatesWithPet = false;
 }
+},
+
+
+// making your pet jump on growing!
+petJump: function() {
+  $("#sideBarPet").css({
+      animation: "petJump " + 0.8 + "s linear"
+    });
+},
+
   },
+
+
+
   computed: {
     // replace weapon with respective item category
      weaponFilter: function(element) {
@@ -599,7 +633,9 @@ for (let i=0; i<4; i++){
 
   },
   mounted () {
-  this.avatarImageLoad();
+  this.petImageLoad();
+  this.avatarEquipmentLoad();
+  this.avatarBodyLoad();
   }
 }
 
