@@ -14,158 +14,38 @@
 
 <template>
   <div>
-    <div id="sideBar"> 
       <div id="avatarContainerPosition">
         <div id="avatarContainer">
           <div id="avatarImageContainer">
           </div>
         </div>
-      </div>
-     <input id="avatarCreationNameInput" type="text"/>
     </div>
-
-
-
-    <div id="loadAvatarConsole">
-
-      <!-- Select your pet --> 
-     <select v-model="petSelected" @change="petImageLoad">
-      <option value=""></option>
-      <option v-for="pet in pet" :value="pet.number">{{pet.name}}</option>
-     </select>
-
-     <br>
-
-     <!-- Select pets size -->
-     <input type="range" min="0" max="10" v-model="petSize" @change="petImageLoad(); petJump();">
-     
-
-     <br><br>
 
     <!-- buttons to customize body parts -->
-     <button class="buttonAvatarCreation" name="skin" @click="changeBodyPartButton">Skin++</button>
-     <button class="buttonAvatarCreation" name="hair" @click="changeBodyPartButton">Hair++</button>
-     <button class="buttonAvatarCreation" name="beard" @click="changeBodyPartButton">Beard++</button>
-     <button class="buttonAvatarCreation" name="shirt" @click="changeBodyPartButton">Shirt++</button>
+     <div id="buttonContainer">
+     <button class="buttonAvatarCreation" name="skin" @click="changeBodyPartButton">Skin</button>
+     <button class="buttonAvatarCreation" name="hair" @click="changeBodyPartButton">Hair</button>
+     <button class="buttonAvatarCreation" name="beard" @click="changeBodyPartButton">Beard</button>
+     <button class="buttonAvatarCreation" name="shirt" @click="changeBodyPartButton">Shirt</button>
      <button class="buttonAvatarCreation" @click="randomLookButton">Random</button>
-
-     <br><br>
-    <!-- Weapon Equip -->
-     <select v-model="weaponSelected" @change='avatarEquipmentLoad'>
-      <option v-for="item in weaponFilter" :value="item.number">{{item.name}}</option>
-     </select>
-     <br><br>
-     <!-- Armor equip --> 
-     <select v-model="armorSelected" @change="avatarEquipmentLoad">
-      <option v-for="item in armorFilter" :value="item.number" >{{item.name}}</option>
-     </select>
-     
-    
-    </div>
+     </div>
+     <input id="avatarCreationNameInput" type="text"/>
+  
   </div>
 </template>
 
 <script>
 
 // VARIABLES
-// AVATAR BACKGROUND VARIABLES
- 
-// linking up everything to one location and moving it relative from that point!
-var avatarBackground = [
-  {
-    number: 0,
-    name: "background-red",
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1497443338/BackgroundRed_nzpixc.png",
-    category: "background",
-    size: [100, 100],
-  },{
-    number: 1,
-    name: "background-yellow",
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1497785371/BackgroundYellow_nzpixc_gcbil8.png",
-    category: "background",
-    size: [100, 100],
-  },
-  {
-    number: 2,
-    name: "background-cherry-trees",
-    source: "static/raw_sprites/spritesmith/backgrounds/background_cherry_trees.png",
-    category: "background",
-    size: [100, 100],
-  },
-  ],
-  backgroundsOwned = [],
-
-// PET VARIABLES
-  pet = [{  
-    name: "Dressed-up water melon",
-  number: 0,
-  source: "http://res.cloudinary.com/gionisos/image/upload/v1497446465/verkleidete_Wassermelone_fgucfh_qswtyf.png",
-    layer: 5,
-    coordinates: [0, 84],
-    size: [52, 45],
-  equipped: false,
-  },{
-    name: "white fox",
-  number: 1,
-  source: "http://res.cloudinary.com/gionisos/image/upload/v1497446465/whitefox_hfsbft_j0iojq.png",
-  layer: 5,
-    coordinates: [0, 84],
-    size: [54, 45],
-  equipped: false,
-  }, {  
-    name: "blue fox",
-  number: 2,
-  source: "http://res.cloudinary.com/gionisos/image/upload/v1498285418/foxBlue_juyx95.png",
-    layer: 5,
-    coordinates: [0, 84],
-    size: [40, 34],
-  equipped: false,
-  },{
-    // ONLY ONE WITH CHANGED COORDINATES SO FAR 
-    name: "golden fox",
-  number: 3,
-  source: "http://res.cloudinary.com/gionisos/image/upload/v1498285418/foxGold_lyva5x.png ",
-  layer: 5,
-  coordinates: [0, 84],
-  size: [54, 45],
-  equipped: true,
-  }, {  
-    name: "black bear",
-  number: 4,
-  source: "http://res.cloudinary.com/gionisos/image/upload/v1498285418/BearBlack_kar4to.png",
-    layer: 5,
-    coordinates: [0, 84],
-    size: [52, 45],
-  equipped: false,
-  }, {  
-    name: "blue flying pig",
-  number: 5,
-  source: "http://res.cloudinary.com/gionisos/image/upload/v1498285418/PigBlue_tnm2uy.png",
-    layer: 5,
-    coordinates: [0, 84],
-    size: [85, 85],
-  equipped: false,
-  },{
-    name: "green flying pig",
-  number: 6,
-  source: "http://res.cloudinary.com/gionisos/image/upload/v1498285418/PigGreen_dskhns.png",
-  layer: 5,
-    coordinates: [0, 84],
-    size: [54, 45],
-  equipped: false,
-  },      
-],
-
 
 //structure items with weapons / robes / etc. 
-  body = [
+  var body = [
   {
     number: 0,
     name: "no bodyPart",
     layer: 1,
     source: "static/raw_sprites/spritesmith/customize/skin/skin_ea8349.png",
     coordinates: [19,32],
-    category: "beard",
     size: [85,85],
   },
   {
@@ -405,104 +285,7 @@ var avatarBackground = [
     size: [85,85],
   },
   ],
-
-
-    item = [
-  {
-  number: 0,
-  name: "no item",
-  category: "weapon"
-  },
-  {
-    number: 1,
-    name: "basic sword",
-    layer: 4,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1497211196/55_9_f43pm3.png",
-    category: "weapon",
-    coordinates: [35,70],
-    size: [35, 35],
-  },
-  {
-    number: 2,
-    name: "apprentice staff",
-    layer: 4,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1498582495/apprentice_staff_j6u0ot.png",
-    category: "weapon",
-    coordinates: [7, 49],
-    size: [68,60],
-  gold: 15,
-  },
-  {
-    number: 3,
-    name: "rusty hat",
-    layer: 3,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1497210647/55_22_apqpad.png",
-    category: "helmet",
-    coordinates: [80, 123],
-    size: [64, 44],
-  },
-  {
-    number: 4,
-    name: "viking hat",
-    layer: 3,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1497211123/55_23_hcoanh.png",
-    category: "helmet",
-    coordinates: [78, 123],
-    size: [65, 45],
-  },
-  {
-    number: 5,
-    name: "warrior armor",
-    layer: 3,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1497211148/55_18_j0wdw1.png",
-    category: "armor",
-    coordinates: [39, 79],
-    size: [66, 42],
-  },
- {
-  number: 6,
-  name: "hitchhikers suits",
-  layer: 3,
-  source: "http://res.cloudinary.com/gionisos/image/upload/v1499957110/pageArmor_xt3cww.png",
-  category: "armor",
-  coordinates: [42, 59],
-  size: [60, 65],
-  gold: 25,
-  },
-  {
-    number: 7,
-    name: "golden shield",
-    layer: 4,
-    source: "http://res.cloudinary.com/gionisos/image/upload/v1497212849/latest_19_gnx49k.png",
-    category: "shield",
-    coordinates: [27, 103],
-    size: [40, 40], 
-  },
-  {
-    number: 8,
-    name: "Bad Ass Sword",
-    layer: 4,
-    source: 'static/raw_sprites/spritesmith/gear/weapon/weapon_special_1.png',
-    category: "weapon",
-    coordinates: [26, 35],
-    size: [60,80], 
-  },
-  {
-  number: 9,
-  name: "chainsaw",
-  layer: 4,
-  source: "http://res.cloudinary.com/gionisos/image/upload/a_29/v1497786925/chainsaw_klqmdz.png",
-  category: "weapon",
-  descriptionShop: "RHMMMM RHMMMM!",
-  descriptionSideBar: "It's so shiny!",
-  coordinates: [16,54],
-  size: [55, 50],
-  gold: 50,
-  },
-];
-
-var itemsEquipped = [],
-  
+  itemsEquipped = [],
   avatar = 
   {
     body: {
@@ -513,8 +296,8 @@ var itemsEquipped = [],
     },
     equipped: {
       shield: 0,
-      weapon: 2,
-      armor: 6,
+      weapon: 0,
+      armor: 0,
       helmet: 0,
       shoes: 0
   }};
@@ -528,12 +311,6 @@ export default {
   name: 'loadAvatar',
   data() {
     return {
-      item: item,
-      pet: pet,
-      petSelected: "3",
-      petSize: 5,
-      weaponSelected: avatar.equipped.weapon,
-      armorSelected: avatar.equipped.armor,
       skinSelected: avatar.body.skin,
       hairSelected: avatar.body.hair,
       beardSelected: avatar.body.beard,
@@ -567,8 +344,6 @@ for(let i=0;i<bodyFilter.length; i++){
   // sew new bodyPart to body
   this.avatarBodyLoad();
 },
-
-
 
 
 randomLookButton: function() {
@@ -612,96 +387,7 @@ for (let i=0; i<bodyPartCategory.length; i++){
         "' value='" + bodyPartCategory[i] + "Equipped" +  "' style=' width:" + body[avatar.body[bodyPartCategory[i]]].size[0]  + "px; height:" + body[avatar.body[bodyPartCategory[i]]].size[1] +  
         "px; position:absolute;top:" + (body[avatar.body[bodyPartCategory[i]]].coordinates[1] + this.avatarCoordinateY) + "px;left:" + (body[avatar.body[bodyPartCategory[i]]].coordinates[0] + this.avatarCoordinateX) + "px; z-index:"+ body[avatar.body[bodyPartCategory[i]]].layer + "'>");
 }};
-},
-
-
-avatarEquipmentLoad: function() {
-
-
-let itemCategory = ["armor","shield","weapon","helmet","shoes"],
-    itemCategorySelected = ["armorSelected","shieldSelected","weaponSelected","helmetSelected","shoesSelected"];
-
-// Adding items to character
-for (let i=0; i< itemCategory.length; i++){
- if (item[avatar.equipped[itemCategory[i]]].length !== 0 && item[avatar.equipped[itemCategory[i]]].number !== 0) {
- 
- // Remove old items
- $('#avatarContainer img[alt="' + item[avatar.equipped[itemCategory[i]]].name + '"]').remove();
-
-// link avatar up to variables in data object
- avatar.equipped[itemCategory[i]] = this[itemCategorySelected[i]];
-
-// Append new items
- $("#avatarContainer").append(
-      "<img src='" + item[avatar.equipped[itemCategory[i]]].source +
-        "' alt='" + item[avatar.equipped[itemCategory[i]]].name + 
-        "' value='" + itemCategory[i] + "Equipped" +  "' style=' width:" + item[avatar.equipped[itemCategory[i]]].size[0]  + "px; height:" + item[avatar.equipped[itemCategory[i]]].size[1] +  
-        "px; position:absolute;top:" + (item[avatar.equipped[itemCategory[i]]].coordinates[1] + this.avatarCoordinateY) + "px;left:" + (item[avatar.equipped[itemCategory[i]]].coordinates[0] + this.avatarCoordinateX) + "px; z-index:"+ item[avatar.equipped[itemCategory[i]]].layer + "'>");
-
-}}
-
-// $("#avatarContainer > img").hide().fadeIn(800);
-
-},
-
-petImageLoad: function() {
-
- // ATTACH ITEMS TO AVATAR RELATIVE TO POSITION 
-if (this.petSelected !== ""){
-
- // Get rid of old pet!
- $('#avatarContainer img[id="sideBarPet"]').remove();
-
-
-//APPEND PET
-$("#avatarContainer").append('<img id="sideBarPet" style="width:'+ (pet[this.petSelected].size[0] * (0.5 + (0.1 * this.petSize)))  +'px; height:'+ (pet[this.petSelected].size[1] * (0.5 + (0.1 * this.petSize))) +'px" src="'+ pet[this.petSelected].source +'"></img>');
-
-//MOVE PET INTO RIGHT POSITION
-$("#sideBarPet").css({
-   "top": this.avatarCoordinateY + pet[this.petSelected].coordinates[1],
-   "left":this.avatarCoordinateX + pet[this.petSelected].coordinates[0]
-});} else {
-  // Get rid of old pet!
- $('#avatarContainer img[id="sideBarPet"]').remove();
-} 
-  
-}
-},
-
-
-// making your pet jump on growing!
-petJump: function() {
-
-  alert("!")
-  $("#sideBarPet").css({
-      animation: "petJump " + 0.8 + "s linear"
-    });
-  },
-
-
-
-  computed: {
-    // replace weapon with respective item category
-     weaponFilter: function(element) {
-      
-      //Problemkind
-      // alert(element.name);
-       return this.item.filter(function(argument) {
-         if(argument.category === "weapon") {
-          return argument;
-         }
-     })
-   },
-   armorFilter: function() {
-       return this.item.filter(function(argument) {
-         if(argument.category === "armor") {
-          return argument;
-         }
-     })
-   }
-
-
-  },
+}},
   mounted () {
   this.avatarBodyLoad();
   }
@@ -714,16 +400,6 @@ petJump: function() {
   body{
     background-color: #464646;
   }
-#sideBar{
-  width: 256px;
-  height: 100%;
-  position: relative;
-  left: 50%;
-  top: 15%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-  
-}
 
 #avatarContainer {
   height: 192px;
@@ -738,6 +414,7 @@ petJump: function() {
   -o-transition: background-image 0.5s;
   transition: background-image 0.5s;
   position: absolute;
+  left: 413px;
   border-bottom: 1px solid gray;
   /* Keeps Avatar Image in the foreground */
   z-index: 9;
@@ -773,21 +450,60 @@ petJump: function() {
   text-align: center;
 }
 
-
-#loadAvatarConsole {
-  height: 200px;
-  width: 400px;
-  background-color: lightgrey;
-  position: relative;
-  margin-top: 15px;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
+#buttonContainer {
+ width: 120px;
+ position: absolute;
+ top: 18px;
+ left: 670px;
 }
 
 .buttonAvatarCreation{
-  margin-left: 25px;
+  width: 100px;
+  height: 40px;
+  background: linear-gradient(to bottom, #4eb5e5 0%,#389ed5 100%); /* W3C */
+  border: none;
+  border-radius: 5px;
+  position: relative;
+  margin-bottom: 2px;
+  border-bottom: 4px solid #2b8bc6;
+  color: #fbfbfb;
+  font-weight: 600;
+  font-family: 'Open Sans', sans-serif;
+  text-shadow: 1px 1px 1px rgba(0,0,0,.4);
+  font-size: 15px;
+  text-align: left;
+  text-indent: 5px;
+  box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2);
+  cursor: pointer;
 }
+.buttonAvatarCreation:active {
+  box-shadow: 0px 2px 0px 0px rgba(0,0,0,.2);
+  top: 1px;
+}
+
+.buttonAvatarCreation:after {
+  content: "";
+  width: 0;
+  height: 0;
+  display: block;
+  border-top: 20px solid #187dbc;
+  border-bottom: 20px solid #187dbc;
+  border-left: 16px solid transparent;
+  border-right: 20px solid #187dbc;
+  position: absolute;
+  opacity: 0.6; 
+  right: 0;
+  top: 0;
+  border-radius: 0 5px 5px 0;  
+}
+
+#avatarCreationNameInput {
+  position: absolute;
+  top: 230px;
+  left: 438px;
+  width: 200px;
+}
+
 
 @keyframes petJump {
   0% {

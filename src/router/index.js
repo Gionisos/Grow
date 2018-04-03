@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import healthBackground from '@/components/healthBackground'
 import loadAvatar from '@/components/loadAvatar'
 import dailies from '@/components/dailies'
+import avatarCreation from "@/components/avatarCreation"
 
 
 Vue.use(Router)
@@ -30,5 +31,11 @@ export default new Router({
       name: 'dailies',
       component: dailies
     },
+     {
+      path: '/avatarCreation',
+      name: 'avatarCreation',
+      component: avatarCreation
+    },
+
   ]
 })
