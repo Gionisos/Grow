@@ -1,45 +1,56 @@
 // make code more readable: check
 // random look function: check
-// add button for clothes
-// make function to hit with a sword on click
-// don't use jquery + vue?
-// use small descriptive functions
-// change Clothes function
+// add button for clothes: check
+// use small descriptive functions: check
+// put better items: check 
+// make pet jump again: check
+// move avatar when pet is equipped or not equipped: check
+
+// create sideBar
+
 // change clothes based on clicking on clothes of character
-// move avatar when pet is equipped or not equipped
-// remove items and pet 
-// put better items
+
 // save name 
 // Save variables
+
+// Optional
+// make function to hit with a sword on click
+// don't use jquery + vue?
 
 <template>
   <div>
     <div id="sideBar"> 
-      <div id="avatarContainerPosition">
         <div id="avatarContainer">
-          <div id="avatarImageContainer">
-          </div>
         </div>
+
+       <div id="experienceBar">
+        <span id="experienceProgress"></span>
       </div>
-     <input id="avatarCreationNameInput" type="text"/>
+
+      <div class="levelContainer">
+        <span class="level">{{level}}</span>
+      </div>
+
+    </div>
+
+    <div id="statConsole">
+      <button @click="experience += 7; updateExperience();">Experience++</button>
     </div>
 
 
 
-    <div id="loadAvatarConsole">
+
+    <div id="customizationConsole">
 
       <!-- Select your pet --> 
-     <select v-model="petSelected" @change="petImageLoad">
+     <select v-model="petSelected" @change="petLoad">
       <option value=""></option>
       <option v-for="pet in pet" :value="pet.number">{{pet.name}}</option>
      </select>
-
      <br>
 
      <!-- Select pets size -->
-     <input type="range" min="0" max="10" v-model="petSize" @change="petImageLoad(); petJump();">
-     
-
+     <input type="range" min="0" max="10" v-model="petSize" @change="petLoad(); petJump(); ">
      <br><br>
 
     <!-- buttons to customize body parts -->
@@ -48,13 +59,13 @@
      <button class="buttonAvatarCreation" name="beard" @click="changeBodyPartButton">Beard++</button>
      <button class="buttonAvatarCreation" name="shirt" @click="changeBodyPartButton">Shirt++</button>
      <button class="buttonAvatarCreation" @click="randomLookButton">Random</button>
-
      <br><br>
+
     <!-- Weapon Equip -->
      <select v-model="weaponSelected" @change='avatarEquipmentLoad'>
       <option v-for="item in weaponFilter" :value="item.number">{{item.name}}</option>
      </select>
-     <br><br>
+
      <!-- Armor equip --> 
      <select v-model="armorSelected" @change="avatarEquipmentLoad">
       <option v-for="item in armorFilter" :value="item.number" >{{item.name}}</option>
@@ -517,6 +528,11 @@ var itemsEquipped = [],
       armor: 6,
       helmet: 0,
       shoes: 0
+  },
+  stats: {
+    level: 1,
+    experience: 10,
+    experienceNeeded:[0,50,55,60,65,70,75,80,85,90,95,100] // should be in backend I suppose
   }};
 
 
@@ -531,6 +547,7 @@ export default {
       item: item,
       pet: pet,
       petSelected: "3",
+      petEquipped: true,
       petSize: 5,
       weaponSelected: avatar.equipped.weapon,
       armorSelected: avatar.equipped.armor,
@@ -538,14 +555,76 @@ export default {
       hairSelected: avatar.body.hair,
       beardSelected: avatar.body.beard,
       shirtSelected: avatar.body.shirt,
-      avatarCoordinateX: 52, 
-      avatarCoordinateY: 40
+      avatarCoordinateX: 68, 
+      avatarCoordinateY: 35,
+
+      // Experience function
+      experience: avatar.stats.experience,
+      level: avatar.stats.level,
+      experienceNeeded: avatar.stats.experienceNeeded[avatar.stats.level],
+     
       }
   },
   methods: {
 
-// Button to switch between differen body parts: One button to switch them all!
+
+// EXPERIENCE FUNCTIONS!
+
+// EXPERIENCE BAR
+updateExperience: function(){
+
+  if (this.experience >= this.experienceNeeded) {
+
+    this.experience -= this.experienceNeeded;
+    this.level++;
+    this.experienceNeeded = avatar.stats.experienceNeeded[this.level];
+
+  }
+
+  //Calculate experience Percentage 
+  let experiencePercentage = this.experience / this.experienceNeeded * 100;
+
+  // Set length of experience bar equal to experiencePercentage
+  $("#experienceProgress").css("width", + experiencePercentage + "%");
+  $("#experienceProgress").css("background-color", "#FF851B");
+ 
+},
+
+
+
+
+
+
+
+
+
+
+
+
+showConsole: function(e){
+
+// load customizationConsole on keypress
+ if (e.keyCode == "81" && $("#customizationConsole").css("display")  == "none"){
+  $("#customizationConsole").css("display","block");
+ } else if (e.keyCode == "81" && $("#customizationConsole").css("display") == "block"){
+  $("#customizationConsole").css("display","none");
+ }
+
+// load stat console on keypress
+ if (e.keyCode == "87" && $("#statConsole").css("display")  == "none"){
+  $("#statConsole").css("display","block");
+ } else if (e.keyCode == "87" && $("#statConsole").css("display") == "block"){
+  $("#statConsole").css("display","none");
+ }
+},
+
+
+
+
+
+
 changeBodyPartButton: function(){
+  // Button to switch between differen body parts: One button to switch them all!
   let bodyFilter = body.filter(function(element) {
   // if number that is passed in is the same as avatar.... category == this way you know if its skin or beard
          if(element.category === event.target.name) {
@@ -595,6 +674,7 @@ this.avatarBodyLoad();
 },
 
 
+
 avatarBodyLoad: function(){
 
 // creating character out of several pieces 
@@ -613,6 +693,7 @@ for (let i=0; i<bodyPartCategory.length; i++){
         "px; position:absolute;top:" + (body[avatar.body[bodyPartCategory[i]]].coordinates[1] + this.avatarCoordinateY) + "px;left:" + (body[avatar.body[bodyPartCategory[i]]].coordinates[0] + this.avatarCoordinateX) + "px; z-index:"+ body[avatar.body[bodyPartCategory[i]]].layer + "'>");
 }};
 },
+
 
 
 avatarEquipmentLoad: function() {
@@ -644,48 +725,77 @@ for (let i=0; i< itemCategory.length; i++){
 
 },
 
-petImageLoad: function() {
+
+
+petLoad: function() {
 
  // ATTACH ITEMS TO AVATAR RELATIVE TO POSITION 
-if (this.petSelected !== ""){
+if (this.petSelected !== "" && !this.petEquipped){
 
- // Get rid of old pet!
- $('#avatarContainer img[id="sideBarPet"]').remove();
+// remove all images and then reload avatar and pet;
+$("#avatarContainer img").remove();
 
+// Shift avatar back into the center
+this.avatarCoordinateX += 15;
 
 //APPEND PET
 $("#avatarContainer").append('<img id="sideBarPet" style="width:'+ (pet[this.petSelected].size[0] * (0.5 + (0.1 * this.petSize)))  +'px; height:'+ (pet[this.petSelected].size[1] * (0.5 + (0.1 * this.petSize))) +'px" src="'+ pet[this.petSelected].source +'"></img>');
 
-//MOVE PET INTO RIGHT POSITION
+
+//Reload avatar body
+this.avatarBodyLoad();
+
+//Don't move avatar again on reloading next pet
+this.petEquipped = true;
+
+
+} else if (this.petSelected !== "" && this.petEquipped) {
+
+// Get rid of old pet!
+ $('#avatarContainer img[id="sideBarPet"]').remove();
+
+ //APPEND PET
+$("#avatarContainer").append('<img id="sideBarPet" style="width:'+ (pet[this.petSelected].size[0] * (0.5 + (0.1 * this.petSize)))  +'px; height:'+ (pet[this.petSelected].size[1] * (0.5 + (0.1 * this.petSize))) +'px" src="'+ pet[this.petSelected].source +'"></img>');
+
+
+} else {
+  // Get rid of old pet!
+ $('#avatarContainer img[id="sideBarPet"]').remove();
+
+ // Shift avatar to the right to make space for pet
+ this.avatarCoordinateX -= 15;
+
+ // remove all images and then reload avatar and pet;
+ $("#avatarContainer img").remove();
+ this.avatarBodyLoad();
+
+ // set petEquipped to true, so that on the next call the avatar is not moved again
+ this.petEquipped = false;
+} 
+  
+
+ //MOVE PET INTO RIGHT POSITION
 $("#sideBarPet").css({
    "top": this.avatarCoordinateY + pet[this.petSelected].coordinates[1],
    "left":this.avatarCoordinateX + pet[this.petSelected].coordinates[0]
-});} else {
-  // Get rid of old pet!
- $('#avatarContainer img[id="sideBarPet"]').remove();
-} 
-  
+});
+
+ $("#sideBarPet").css({
+      animation: "petJump " + 0.8 + "s linear"
+    });
+
+
+
 }
 },
 
 
-// making your pet jump on growing!
-petJump: function() {
-
-  alert("!")
-  $("#sideBarPet").css({
-      animation: "petJump " + 0.8 + "s linear"
-    });
-  },
-
-
-
   computed: {
+
     // replace weapon with respective item category
      weaponFilter: function(element) {
-      
       //Problemkind
-      // alert(element.name);
+
        return this.item.filter(function(argument) {
          if(argument.category === "weapon") {
           return argument;
@@ -698,38 +808,113 @@ petJump: function() {
           return argument;
          }
      })
-   }
-
-
+   },
   },
+
+
   mounted () {
+  // load experienceBar
+  this.updateExperience();
+
+  // load avatar, items and pet on start
   this.avatarBodyLoad();
-  }
+  this.avatarEquipmentLoad();
+  this.petLoad();
+  },
+
+
+
+  created () {
+
+    // listen for keypress
+    window.addEventListener('keyup', this.showConsole)
+  },
 }
 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-  body{
-    background-color: #464646;
-  }
-#sideBar{
-  width: 256px;
+
+#experienceBar {
+  height: 31px;
+  margin: 2px 0 1px 0;
+  width: 220px;
+  box-sizing: border-box;
+  border: 2px solid black;
+  float: left;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+#experienceProgress {
+display: block;
   height: 100%;
-  position: relative;
-  left: 50%;
-  top: 15%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
+  width: 0;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  background-color: #FF851B;
+  background-image: linear-gradient( center bottom, rgb(43, 194, 83) 37%, rgb(84, 240, 84) 69%);
+  box-shadow: inset 0 2px 9px rgba(255, 255, 255, 0.3), inset 0 -2px 6px rgba(0, 0, 0, 0.4);
+  /* transition: all 800ms; */
+}
+
+.levelContainer {
+  width: 36px;
+  height: 70px;
+  box-sizing: border-box;
+  float: right;
+  text-align: center;
+}
+
+.level {
+  line-height: 20px;
+  border: 2px double black;
+  cursor: pointer;
+  color: white;
+  background-color: gray;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  position: absolute;
+  left: 225px;
+  top: 200px;
+}
+
+
+
+
+
+body {
+  height: 768px;
+  width: 1024px;
+  display: block;
+  border: 1px solid white;
+  background-color: #464646;
+}
+
+#sideBar {
+  min-width: 256px;
+  min-height: 768px;
+  border: 10px solid white;
+  display: block;
+
+  /* For demonstration purposes in this vue element*/
+  position: absolute;
+  top: 50px;
+  left: 20px;
+  /*                                               */
   
+
+  background-color: "white";
 }
 
 #avatarContainer {
   height: 192px;
   width: 255px;
   background-color: #A3320B;
-
   background-image: url("../../static/raw_sprites/spritesmith/backgrounds/background_autumn_forest.png");
   background-size:cover;
   -webkit-transition: background-image 0.5s;
@@ -737,17 +922,11 @@ petJump: function() {
   -ms-transition: background-image 0.5s;
   -o-transition: background-image 0.5s;
   transition: background-image 0.5s;
-  position: absolute;
   border-bottom: 1px solid gray;
   /* Keeps Avatar Image in the foreground */
   z-index: 9;
-  
 }
 
-#avatarContainerPosition {
-  height: 192px;
-  width: 255px;
-}
 
 #avatarContainerBackgroundDiv {
   position: absolute; 
@@ -764,29 +943,6 @@ petJump: function() {
 
 #sideBarPet {
   position: absolute;
-}
-
-#avatarCreationNameInput {
-  position: relative;
-  top: 5px;
-  left: 40px;
-  text-align: center;
-}
-
-
-#loadAvatarConsole {
-  height: 200px;
-  width: 400px;
-  background-color: lightgrey;
-  position: relative;
-  margin-top: 15px;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-}
-
-.buttonAvatarCreation{
-  margin-left: 25px;
 }
 
 @keyframes petJump {
@@ -806,6 +962,82 @@ petJump: function() {
    transform: translate(0px,7px)
   }
 }
+
+
+
+
+#customizationConsole {
+  height: 200px;
+  width: 400px;
+  background-color: lightgrey;
+  position: absolute;
+  margin-top: 15px;
+  top: 30px;
+  left: 300px;
+  display: none;
+}
+
+#buttonContainer {
+ width: 120px;
+ position: absolute;
+ top: 18px;
+ left: 670px;
+}
+
+.buttonAvatarCreation{
+  width: 100px;
+  height: 40px;
+  background: linear-gradient(to bottom, #4eb5e5 0%,#389ed5 100%); /* W3C */
+  border: none;
+  border-radius: 5px;
+  position: relative;
+  margin-bottom: 2px;
+  border-bottom: 4px solid #2b8bc6;
+  color: #fbfbfb;
+  font-weight: 600;
+  font-family: 'Open Sans', sans-serif;
+  text-shadow: 1px 1px 1px rgba(0,0,0,.4);
+  font-size: 15px;
+  text-align: left;
+  text-indent: 5px;
+  box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2);
+  cursor: pointer;
+}
+.buttonAvatarCreation:active {
+  box-shadow: 0px 2px 0px 0px rgba(0,0,0,.2);
+  top: 1px;
+}
+
+.buttonAvatarCreation:after {
+  content: "";
+  width: 0;
+  height: 0;
+  display: block;
+  border-top: 20px solid #187dbc;
+  border-bottom: 20px solid #187dbc;
+  border-left: 16px solid transparent;
+  border-right: 20px solid #187dbc;
+  position: absolute;
+  opacity: 0.6; 
+  right: 0;
+  top: 0;
+  border-radius: 0 5px 5px 0;  
+}
+
+
+
+#statConsole {
+  height: 200px;
+  width: 400px;
+  background-color: lightgrey;
+  position: absolute;
+  margin-top: 15px;
+  top: 30px;
+  left: 300px;
+  display: none;
+}
+
+
 
 </style>
 

@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import healthBackground from '@/components/healthBackground'
 import loadAvatar from '@/components/loadAvatar'
-import dailies from '@/components/dailies'
 import avatarCreation from "@/components/avatarCreation"
 
 
@@ -27,11 +26,6 @@ export default new Router({
       component: loadAvatar
     },
     {
-      path: '/dailies',
-      name: 'dailies',
-      component: dailies
-    },
-     {
       path: '/avatarCreation',
       name: 'avatarCreation',
       component: avatarCreation

@@ -1,16 +1,16 @@
 // make code more readable: check
 // random look function: check
-// add button for clothes
-// make function to hit with a sword on click
-// don't use jquery + vue?
-// use small descriptive functions
-// change Clothes function
-// change clothes based on clicking on clothes of character
-// move avatar when pet is equipped or not equipped
-// remove items and pet 
-// put better items
+// add button for clothes: check
+// use small descriptive functions: check
+
+// #nobeard
 // save name 
 // Save variables
+
+// Optional: 
+// make the character jump on click
+// don't use jquery + vue?
+// change clothes based on clicking on clothes of character
 
 <template>
   <div>
@@ -396,7 +396,7 @@ for (let i=0; i<bodyPartCategory.length; i++){
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped>
   body{
     background-color: #464646;
   }
@@ -445,7 +445,7 @@ for (let i=0; i<bodyPartCategory.length; i++){
 
 #avatarCreationNameInput {
   position: relative;
-  top: 5px;
+  top: -20px;
   left: 40px;
   text-align: center;
 }
