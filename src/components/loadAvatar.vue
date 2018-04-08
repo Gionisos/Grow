@@ -5,13 +5,15 @@
 // put better items: check 
 // make pet jump again: check
 // move avatar when pet is equipped or not equipped: check
+// experiencebar: check
+// level up: check
+// create sideBar: check
+// consoles: check
 
-// create sideBar
-
-// change clothes based on clicking on clothes of character
-
-// save name 
-// Save variables
+// Create experience feedback! Stars flying
+// create reward feedback (You unlocked this item!)
+// create drop function
+// change clothes and items based on clicking on clothes of character
 
 // Optional
 // make function to hit with a sword on click
@@ -27,18 +29,30 @@
         <span id="experienceProgress"></span>
       </div>
 
-      <div class="levelContainer">
-        <span class="level">{{level}}</span>
+      <div id="levelContainer">
+        <span id="level">{{level}}</span>
       </div>
+
+      <div id="vaultContainer">
+        <div id="goldContainer">
+          {{gold}} Gold
+        </div>
+        <div id="marketContainer">
+          <div id="clickMarketContainerBox">
+            <span id="buyButtonYes"> Yes </span> 
+            <span id="buyButtonNo"> No </span>
+          </div>
+          <div id="marketImageContainer">
+          </div>
+        </div>
+    </div>
 
     </div>
 
     <div id="statConsole">
-      <button @click="experience += 7; updateExperience();">Experience++</button>
+      <button id="increaseExperienceButton" @click="experience += 7; rewardAnimation(); updateExperience();">Experience++</button>
+      <button @click="gold +=5">Gold++</button>
     </div>
-
-
-
 
     <div id="customizationConsole">
 
@@ -69,6 +83,11 @@
      <!-- Armor equip --> 
      <select v-model="armorSelected" @change="avatarEquipmentLoad">
       <option v-for="item in armorFilter" :value="item.number" >{{item.name}}</option>
+     </select>
+
+     <!-- Items Owned -->
+     <select  @change='avatarEquipmentLoad'>
+      <option v-for="item in itemsOwnedFilter" :value="item.number">{{item.name}}</option>
      </select>
      
     
@@ -441,7 +460,7 @@ var avatarBackground = [
     category: "weapon",
     coordinates: [7, 49],
     size: [68,60],
-  gold: 15,
+    gold: 15,
   },
   {
     number: 3,
@@ -460,6 +479,7 @@ var avatarBackground = [
     category: "helmet",
     coordinates: [78, 123],
     size: [65, 45],
+    gold: 20,
   },
   {
     number: 5,
@@ -469,6 +489,7 @@ var avatarBackground = [
     category: "armor",
     coordinates: [39, 79],
     size: [66, 42],
+    gold: 20,
   },
  {
   number: 6,
@@ -488,6 +509,7 @@ var avatarBackground = [
     category: "shield",
     coordinates: [27, 103],
     size: [40, 40], 
+    gold: 50
   },
   {
     number: 8,
@@ -497,6 +519,7 @@ var avatarBackground = [
     category: "weapon",
     coordinates: [26, 35],
     size: [60,80], 
+    gold: 20
   },
   {
   number: 9,
@@ -532,7 +555,9 @@ var itemsEquipped = [],
   stats: {
     level: 1,
     experience: 10,
-    experienceNeeded:[0,50,55,60,65,70,75,80,85,90,95,100] // should be in backend I suppose
+    experienceNeeded:[0,50,55,60,65,70,75,80,85,90,95,100], // should be in backend I suppose
+    gold: 5,
+    itemsOwned: [4,1]
   }};
 
 
@@ -562,16 +587,79 @@ export default {
       experience: avatar.stats.experience,
       level: avatar.stats.level,
       experienceNeeded: avatar.stats.experienceNeeded[avatar.stats.level],
-     
+      
+
+      // Vault function
+      gold: avatar.stats.gold,
+      itemOfInterest: 8,
+      itemsOwned: avatar.stats.itemsOwned,
       }
   },
   methods: {
+
+/********************************* VAULT / GOLD METHODS ********************************************/
+
+// MARKET - ITEM OF INTEREST
+loadItemOfInterest: function(){
+  alert(this.itemsOwned);
+  
+  // Adjust size of picture to box size
+  let computeSize = 1.1;
+  do {
+     computeSize -= 0.1;
+  } while (item[this.itemOfInterest].size[0] * computeSize >= 30 && item[this.itemOfInterest].size[1] * computeSize >= 50);
+    
+
+
+  $("#marketImageContainer").html(
+    "<img src='" + item[this.itemOfInterest].source + "'" + "id='marketImage' alt='"+ item[this.itemOfInterest].name +"' style='width: " + item[this.itemOfInterest].size[0] * computeSize + "px; height: "+ item[this.itemOfInterest].size[1] * computeSize + "px'><span id='marketImageText'>Gold: " + item[this.itemOfInterest].gold +"</span>"
+  );
+},
+
+
+clickMarketContainer: function(){
+  if(document.getElementById("clickMarketContainerBox").clientWidth == "0") {
+  document.getElementById("clickMarketContainerBox").style.width = "40px";
+  document.getElementById("clickMarketContainerBox").style.border = "1px solid black";
+  $("#buyButtonYes, #buyButtonNo").css("display","block");
+  } else {
+  document.getElementById("clickMarketContainerBox").style.width = "0px";
+  document.getElementById("clickMarketContainerBox").style.border = "";
+  $("#buyButtonYes, #buyButtonNo").css("display","none");
+  }  
+},
+
+
+buyItemOfInterest: function(){
+if(this.gold >= item[this.itemOfInterest].gold){
+  this[item[this.itemOfInterest].category + "Selected"] = this.itemOfInterest;
+  this.gold -= item[this.itemOfInterest].gold;
+  avatar.stats.itemsOwned.push(this.itemOfInterest);
+  //Change itemOfInterest (make real function in the future, based on what the person would be able to buy next
+  this.itemOfInterest++;
+
+  this.loadItemOfInterest();
+  this.avatarEquipmentLoad();
+} else {
+  alert("You currently don't have enough gold!");
+}
+},
+
+
+
+
+
+
+
+
+
 
 
 // EXPERIENCE FUNCTIONS!
 
 // EXPERIENCE BAR
-updateExperience: function(){
+
+updateExperience: function(event){
 
   if (this.experience >= this.experienceNeeded) {
 
@@ -588,32 +676,40 @@ updateExperience: function(){
   $("#experienceProgress").css("width", + experiencePercentage + "%");
   $("#experienceProgress").css("background-color", "#FF851B");
  
+
+
+},
+
+
+ // feedback: append image at position a and change position to point b - change over time in css (speed) - remove after time - Problemkind
+rewardAnimation: function(event){
+
+ $("body").append('<img id="experienceFeedback"src="static/raw_sprites/backer-only/BackerOnly-Weapon-DarkSoulsBlade.gif" >');
+
+  
+  let newPosition = $(levelContainer).offset();
+  
+  $("#experienceFeedback").css({ top: newPosition.top, left: newPosition.left});
+
 },
 
 
 
 
 
-
-
-
-
-
-
-
-showConsole: function(e){
+showConsole: function(event){
 
 // load customizationConsole on keypress
- if (e.keyCode == "81" && $("#customizationConsole").css("display")  == "none"){
+ if (event.keyCode == "81" && $("#customizationConsole").css("display")  == "none"){
   $("#customizationConsole").css("display","block");
- } else if (e.keyCode == "81" && $("#customizationConsole").css("display") == "block"){
+ } else if (event.keyCode == "81" && $("#customizationConsole").css("display") == "block"){
   $("#customizationConsole").css("display","none");
  }
 
 // load stat console on keypress
- if (e.keyCode == "87" && $("#statConsole").css("display")  == "none"){
+ if (event.keyCode == "87" && $("#statConsole").css("display")  == "none"){
   $("#statConsole").css("display","block");
- } else if (e.keyCode == "87" && $("#statConsole").css("display") == "block"){
+ } else if (event.keyCode == "87" && $("#statConsole").css("display") == "block"){
   $("#statConsole").css("display","none");
  }
 },
@@ -794,7 +890,7 @@ $("#sideBarPet").css({
 
     // replace weapon with respective item category
      weaponFilter: function(element) {
-      //Problemkind
+      //Problemkind I would like this to be a filter for all the categories
 
        return this.item.filter(function(argument) {
          if(argument.category === "weapon") {
@@ -809,6 +905,11 @@ $("#sideBarPet").css({
          }
      })
    },
+
+   itemsOwnedFilter: function() {
+   // problemkind!
+      
+   }
   },
 
 
@@ -816,19 +917,24 @@ $("#sideBarPet").css({
   // load experienceBar
   this.updateExperience();
 
+  // load itemOfInterest
+  this.loadItemOfInterest();
+
   // load avatar, items and pet on start
   this.avatarBodyLoad();
   this.avatarEquipmentLoad();
   this.petLoad();
+
+  // listen for click on Market Container
+  document.getElementById("marketContainer").addEventListener("click", this.clickMarketContainer);
+
+  // listen for click on Buy Button
+   document.getElementById("buyButtonYes").addEventListener("click", this.buyItemOfInterest);
+
+  // listen for keypress
+  window.addEventListener('keyup', this.showConsole);
   },
 
-
-
-  created () {
-
-    // listen for keypress
-    window.addEventListener('keyup', this.showConsole)
-  },
 }
 
 </script>
@@ -836,15 +942,18 @@ $("#sideBarPet").css({
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 
+
+/********************************************** Experience CSS *********************************************************/
+
 #experienceBar {
   height: 31px;
-  margin: 2px 0 1px 0;
+  margin: 4px 0 1px 0;
   width: 220px;
   box-sizing: border-box;
   border: 2px solid black;
-  float: left;
   border-radius: 30px;
   overflow: hidden;
+  background-color: white;
 }
 
 #experienceProgress {
@@ -861,26 +970,24 @@ display: block;
   /* transition: all 800ms; */
 }
 
-.levelContainer {
-  width: 36px;
-  height: 70px;
-  box-sizing: border-box;
-  float: right;
-  text-align: center;
-}
-
-.level {
+#level {
   line-height: 20px;
   border: 2px double black;
   cursor: pointer;
   color: white;
   background-color: gray;
+  text-align: center;
   width: 20px;
   height: 20px;
   display: inline-block;
   position: absolute;
   left: 225px;
   top: 200px;
+}
+
+#experienceFeedback {
+  position: absolute;
+  transition: all 800ms;
 }
 
 
@@ -965,6 +1072,7 @@ body {
 
 
 
+/****************************  CONSOLE CSS ***************************************/
 
 #customizationConsole {
   height: 200px;
@@ -1024,8 +1132,6 @@ body {
   border-radius: 0 5px 5px 0;  
 }
 
-
-
 #statConsole {
   height: 200px;
   width: 400px;
@@ -1036,6 +1142,103 @@ body {
   left: 300px;
   display: none;
 }
+
+
+
+/******************************* VAULT / GOLD CSS *************************************/
+
+
+#vaultContainer {
+  height: 100px;
+  width: 256px;
+  box-sizing: border-box;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  background-color: white;
+}
+
+#goldContainer {
+  height: 100px;
+  width: 180px;
+  box-sizing: border-box;
+  border-right: 1px solid black;
+  float: left;
+  line-height: 100px;
+  text-align: center;
+}
+
+#goldImage {
+  height: 98px;
+  width: 178px;
+}
+
+#marketContainer {
+  height: 98px;
+  width: 76px;
+  box-sizing: border-box;
+  background-color: white;
+  float: left;
+}
+
+#marketImageContainer {
+  width: 60px;
+  height: 60px;
+  border-radius: 5px 0 0 5px;
+  margin: 20px 8px 20px 8px;
+  border: 1px solid black;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: center;
+}
+
+#marketImage {
+  display: block;
+  margin: 0 auto;
+  padding-left: 7px;
+}
+
+#marketImageText {
+  line-height: 10px;
+  font-size: 10px;
+  position: relative;
+  top: -5px;
+}
+
+#clickMarketContainerBox {
+  position: absolute;
+  top: 250px;
+  left: 250px;
+  width: 0;
+  height: 62px;
+  padding-top: 5px;
+  border-radius: 0 10px 10px 0;
+  box-sizing: border-box;
+  background-color: white;
+  font-size: 10px;
+  line-height: 19px;
+  text-align: center;
+  z-index: 99;
+  transition: all 400ms;
+}
+
+#buyButtonYes,
+#buyButtonNo {
+  cursor: pointer;
+  display: none;
+}
+
+#buyButtonYes {
+  color: green;
+  display: none;
+}
+
+#buyButtonNo {
+  color: red;
+  margin-top: 10px;
+}
+
+
+
 
 
 
