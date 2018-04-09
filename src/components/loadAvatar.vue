@@ -9,7 +9,9 @@
 // level up: check
 // create sideBar: check
 // consoles: check
+// add items to itemsowned: check
 
+// create avatarEquipment function that takes items as arguments - not really necessary since you just need to equip it weaponSelected, etc. 
 // Create experience feedback! Stars flying
 // create reward feedback (You unlocked this item!)
 // create drop function
@@ -85,9 +87,9 @@
       <option v-for="item in armorFilter" :value="item.number" >{{item.name}}</option>
      </select>
 
-     <!-- Items Owned -->
-     <select  @change='avatarEquipmentLoad'>
-      <option v-for="item in itemsOwnedFilter" :value="item.number">{{item.name}}</option>
+     <!-- Items Owned // itemsowned has the item numbers stacked // @change send item to avatarEquipmentLoad // hier-->
+     <select v-model="itemSelected" @change='itemSelectedCategory(); avatarEquipmentLoad();'>
+      <option v-for="items in itemsOwned" :value="item[items].name">{{item[items].name}}</option>
      </select>
      
     
@@ -574,8 +576,10 @@ export default {
       petSelected: "3",
       petEquipped: true,
       petSize: 5,
+      itemSelected: "",
       weaponSelected: avatar.equipped.weapon,
       armorSelected: avatar.equipped.armor,
+      helmetSelected: avatar.equipped.helmet,
       skinSelected: avatar.body.skin,
       hairSelected: avatar.body.hair,
       beardSelected: avatar.body.beard,
@@ -601,7 +605,6 @@ export default {
 
 // MARKET - ITEM OF INTEREST
 loadItemOfInterest: function(){
-  alert(this.itemsOwned);
   
   // Adjust size of picture to box size
   let computeSize = 1.1;
@@ -651,8 +654,25 @@ if(this.gold >= item[this.itemOfInterest].gold){
 
 
 
+rewardPopUp: function(){
+
+},
 
 
+itemSelectedCategory: function(){
+ for(let i=0; i<item.length;i++){
+  if(this.itemSelected === item[i].name){
+    this.itemSelected = item[i];
+    break;
+  }
+ }
+ 
+ this[this.itemSelected.category + "Selected"] = this.itemSelected.number; 
+},
+
+
+
+/********************************************** EXPERIENCE FUNCTIONS ****************************************************/
 
 
 // EXPERIENCE FUNCTIONS!
@@ -718,6 +738,8 @@ showConsole: function(event){
 
 
 
+
+/****************************************************** BODY FUNCTIONS ***************************************************/
 
 changeBodyPartButton: function(){
   // Button to switch between differen body parts: One button to switch them all!
@@ -791,6 +813,7 @@ for (let i=0; i<bodyPartCategory.length; i++){
 },
 
 
+/*********************************************************** EQUIPMENT FUNCTION *************************************************/
 
 avatarEquipmentLoad: function() {
 
@@ -905,11 +928,6 @@ $("#sideBarPet").css({
          }
      })
    },
-
-   itemsOwnedFilter: function() {
-   // problemkind!
-      
-   }
   },
 
 
@@ -933,8 +951,15 @@ $("#sideBarPet").css({
 
   // listen for keypress
   window.addEventListener('keyup', this.showConsole);
+
+
+
+  // test!
+  this.rewardPopUp();
+
   },
 
+  
 }
 
 </script>
@@ -1211,6 +1236,7 @@ body {
   width: 0;
   height: 62px;
   padding-top: 5px;
+  border-left: 0px !important;
   border-radius: 0 10px 10px 0;
   box-sizing: border-box;
   background-color: white;
