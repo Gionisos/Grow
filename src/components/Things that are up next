@@ -1,0 +1,29 @@
+// DON'T BOTHER MUCH ABOUT STYLE AT THE MOMENT, JUST TAKE CARE OF THE FUNCTIONALITY
+
+// make code more readable: check
+// random look function: check
+// add button for clothes: check
+// use small descriptive functions: check
+// put better items: check 
+// make pet jump again: check
+// move avatar when pet is equipped or not equipped: check
+// experiencebar: check
+// level up: check
+// create sideBar: check
+// consoles: check
+// add items to itemsowned: check
+
+
+
+
+// pomodoro timer in own vue instance
+
+
+// Create experience feedback! Stars flying
+// create reward feedback (You unlocked this item!)
+// create drop function
+// change clothes and items based on clicking on clothes of character
+
+// Optional
+// make function to hit with a sword on click
+// don't use jquery + vue?

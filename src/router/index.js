@@ -4,7 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import healthBackground from '@/components/healthBackground'
 import loadAvatar from '@/components/loadAvatar'
 import avatarCreation from "@/components/avatarCreation"
-
+import pomodoro from '@/components/pomodoro'
 
 Vue.use(Router)
 
@@ -29,6 +29,11 @@ export default new Router({
       path: '/avatarCreation',
       name: 'avatarCreation',
       component: avatarCreation
+    },
+    {
+      path: '/pomodoro',
+      name: 'pomodoro',
+      component: pomodoro
     },
 
   ]

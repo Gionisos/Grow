@@ -1,3 +1,5 @@
+// DON'T BOTHER MUCH ABOUT STYLE AT THE MOMENT, JUST TAKE CARE OF THE FUNCTIONALITY
+
 // make code more readable: check
 // random look function: check
 // add button for clothes: check
@@ -10,10 +12,12 @@
 // create sideBar: check
 // consoles: check
 // add items to itemsowned: check
+// create reward feedback (You unlocked this item!): check
 
-// create avatarEquipment function that takes items as arguments - not really necessary since you just need to equip it weaponSelected, etc. 
+// pomodoro timer 
+
+
 // Create experience feedback! Stars flying
-// create reward feedback (You unlocked this item!)
 // create drop function
 // change clothes and items based on clicking on clothes of character
 
@@ -98,6 +102,10 @@
 </template>
 
 <script>
+
+
+
+
 
 // VARIABLES
 // AVATAR BACKGROUND VARIABLES
@@ -558,7 +566,7 @@ var itemsEquipped = [],
     level: 1,
     experience: 10,
     experienceNeeded:[0,50,55,60,65,70,75,80,85,90,95,100], // should be in backend I suppose
-    gold: 5,
+    gold: 20,
     itemsOwned: [4,1]
   }};
 
@@ -568,6 +576,8 @@ var itemsEquipped = [],
 
 
 export default {
+
+
   name: 'loadAvatar',
   data() {
     return {
@@ -613,7 +623,7 @@ loadItemOfInterest: function(){
   } while (item[this.itemOfInterest].size[0] * computeSize >= 30 && item[this.itemOfInterest].size[1] * computeSize >= 50);
     
 
-
+  // append item and its prize
   $("#marketImageContainer").html(
     "<img src='" + item[this.itemOfInterest].source + "'" + "id='marketImage' alt='"+ item[this.itemOfInterest].name +"' style='width: " + item[this.itemOfInterest].size[0] * computeSize + "px; height: "+ item[this.itemOfInterest].size[1] * computeSize + "px'><span id='marketImageText'>Gold: " + item[this.itemOfInterest].gold +"</span>"
   );
@@ -621,6 +631,7 @@ loadItemOfInterest: function(){
 
 
 clickMarketContainer: function(){
+  // Open or close container based on width of containerbox
   if(document.getElementById("clickMarketContainerBox").clientWidth == "0") {
   document.getElementById("clickMarketContainerBox").style.width = "40px";
   document.getElementById("clickMarketContainerBox").style.border = "1px solid black";
@@ -634,13 +645,26 @@ clickMarketContainer: function(){
 
 
 buyItemOfInterest: function(){
+
+// If gold is higher than price, buy item
 if(this.gold >= item[this.itemOfInterest].gold){
+
+  // equip item 
   this[item[this.itemOfInterest].category + "Selected"] = this.itemOfInterest;
+
+  // remove gold
   this.gold -= item[this.itemOfInterest].gold;
+
+  // push item to list of itemsowned
   avatar.stats.itemsOwned.push(this.itemOfInterest);
+
+  // Display Reward
+  this.rewardPopUpItem(this.itemOfInterest);
+
   //Change itemOfInterest (make real function in the future, based on what the person would be able to buy next
   this.itemOfInterest++;
 
+  // reload functions
   this.loadItemOfInterest();
   this.avatarEquipmentLoad();
 } else {
@@ -649,24 +673,37 @@ if(this.gold >= item[this.itemOfInterest].gold){
 },
 
 
+rewardPopUpItem: function(itemNumber){
+  // element is number of item that you found
+  
+  // Shift popup text to ALL CAPS
+  let popUpText = item[itemNumber].name.toUpperCase();
+  
+  // Create PopUp
+  $("body").append("<div id='popUpRewardContainer'><img src='"+ item[itemNumber].source +"'><span>You unlocked a new item!<br>"+ popUpText +"</span><br><span id='popUpClose'>Amazing!</span></div>");
+
+  // FadeIn PopUp
+  $("#popUpRewardContainer").hide().fadeIn("slow");
 
 
-
-
-
-rewardPopUp: function(){
+  // Close PopUp
+  $(document).on("click", "#popUpClose", function(){
+  $(this).parent().fadeOut("slow", function(){$(this).remove();});
+  });
 
 },
 
 
 itemSelectedCategory: function(){
+// Search for item name in item!
  for(let i=0; i<item.length;i++){
   if(this.itemSelected === item[i].name){
     this.itemSelected = item[i];
     break;
   }
  }
- 
+
+// change for example weaponSelected to basic sword 
  this[this.itemSelected.category + "Selected"] = this.itemSelected.number; 
 },
 
@@ -955,7 +992,7 @@ $("#sideBarPet").css({
 
 
   // test!
-  this.rewardPopUp();
+  this.rewardPopUpItem();
 
   },
 
@@ -966,58 +1003,6 @@ $("#sideBarPet").css({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-
-
-/********************************************** Experience CSS *********************************************************/
-
-#experienceBar {
-  height: 31px;
-  margin: 4px 0 1px 0;
-  width: 220px;
-  box-sizing: border-box;
-  border: 2px solid black;
-  border-radius: 30px;
-  overflow: hidden;
-  background-color: white;
-}
-
-#experienceProgress {
-display: block;
-  height: 100%;
-  width: 0;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  background-color: #FF851B;
-  background-image: linear-gradient( center bottom, rgb(43, 194, 83) 37%, rgb(84, 240, 84) 69%);
-  box-shadow: inset 0 2px 9px rgba(255, 255, 255, 0.3), inset 0 -2px 6px rgba(0, 0, 0, 0.4);
-  /* transition: all 800ms; */
-}
-
-#level {
-  line-height: 20px;
-  border: 2px double black;
-  cursor: pointer;
-  color: white;
-  background-color: gray;
-  text-align: center;
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  position: absolute;
-  left: 225px;
-  top: 200px;
-}
-
-#experienceFeedback {
-  position: absolute;
-  transition: all 800ms;
-}
-
-
-
-
 
 body {
   height: 768px;
@@ -1170,6 +1155,54 @@ body {
 
 
 
+/********************************************** Experience CSS *********************************************************/
+
+#experienceBar {
+  height: 31px;
+  margin: 4px 0 1px 0;
+  width: 220px;
+  box-sizing: border-box;
+  border: 2px solid black;
+  border-radius: 30px;
+  overflow: hidden;
+  background-color: white;
+}
+
+#experienceProgress {
+display: block;
+  height: 100%;
+  width: 0;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  background-color: #FF851B;
+  background-image: linear-gradient( center bottom, rgb(43, 194, 83) 37%, rgb(84, 240, 84) 69%);
+  box-shadow: inset 0 2px 9px rgba(255, 255, 255, 0.3), inset 0 -2px 6px rgba(0, 0, 0, 0.4);
+  /* transition: all 800ms; */
+}
+
+#level {
+  line-height: 20px;
+  border: 2px double black;
+  cursor: pointer;
+  color: white;
+  background-color: gray;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  position: absolute;
+  left: 225px;
+  top: 200px;
+}
+
+#experienceFeedback {
+  position: absolute;
+  transition: all 800ms;
+}
+
+
 /******************************* VAULT / GOLD CSS *************************************/
 
 
@@ -1264,9 +1297,51 @@ body {
 }
 
 
+#popUpRewardContainer {
+  display: inline-block;
+  width: 300px;
+  height: 300px;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  z-index: 50;
+  background-color: white;
+  border: 4px double darkgrey;
+  text-align: center;
+  line-height: 30px;
+}
 
+#popUpRewardContainer span {
+  font-size: 18px;
+  display: inline-block;
+  clear: both;
+}
 
+#popUpRewardContainer img {
+  float: left;
+  width: 80px;
+  height: 80px;
+  margin: 50px 0 30px 110px;
+  padding: 10px;
+  border: 3px solid black;
+  border-radius: 20px;
+  background-color: grey;
+}
 
+#popUpClose {
+  display: inline-block;
+  margin-top: 5px;
+  width: 80px;
+  height: 40px;
+  border: 1px solid black;
+  border-radius: 20px;
+  line-height: 40px;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
 
 </style>
 
